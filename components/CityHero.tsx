@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { City } from "@/lib/cities";
+import { getAssetPath } from "@/lib/basePath";
 import { LeadForm } from "./LeadForm";
 import { TeachersSection } from "./TeachersSection";
 import { CourseTypesSection } from "./CourseTypesSection";
@@ -33,7 +34,7 @@ export function CityHero({ city }: { city: City }) {
       <header className="siteHeader">
         <Link className="brand" href="/istanbul" aria-label="Konuşarak Öğren ana sayfa">
           <Image
-            src="/logo/ko-logo-yatay.png"
+            src={getAssetPath("/logo/ko-logo-yatay.png")}
             alt="Konuşarak Öğren"
             width={180}
             height={44}

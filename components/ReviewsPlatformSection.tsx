@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { getAssetPath } from "@/lib/basePath";
 
 type Review = {
   name: string;
@@ -104,7 +105,7 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
               <div className="phoneScreen">
                 <div className="appTop">
                   <Image
-                    src="/logo/ko-logo-papagan.png"
+                    src={getAssetPath("/logo/ko-logo-papagan.png")}
                     alt="Konuşarak Öğren"
                     width={24}
                     height={27}
