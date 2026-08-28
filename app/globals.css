@@ -185,8 +185,8 @@ h1 em { display: block; margin-top: 14px; color: var(--blue); font-size: .58em; 
 .courseAdvantages { min-height: 115px; margin: 0; padding: 17px 0 0; border-top: 1px solid var(--line); list-style: none; }
 .courseAdvantages li { display: flex; gap: 8px; margin: 0 0 10px; color: #45536b; font-size: .68rem; line-height: 1.35; }
 .courseAdvantages li span { color: #249065; font-weight: 900; }
-.courseActions { display: grid; grid-template-columns: 1.15fr .85fr; gap: 8px; padding: 18px 0; }
-.courseActions a { min-height: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 25px; font-family: 'Quicksand', sans-serif; font-size: 16px; font-weight: 700; text-align: center; }
+.courseActions { display: flex; flex-direction: column; gap: 8px; padding: 18px 0; }
+.courseActions a { width: 100%; min-height: 42px; height: 42px; padding: 0 14px; display: flex; align-items: center; justify-content: center; border-radius: 21px; font-family: 'Quicksand', sans-serif; font-size: 0.85rem; font-weight: 700; text-align: center; white-space: nowrap; }
 .coursePrimary { gap: 8px; background: var(--blue); color: white; border: 0; }
 .coursePrimary:hover { background: var(--ink); }
 .courseLink { border: 1px solid var(--blue); color: var(--blue); background: #FFFFFF; }
