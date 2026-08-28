@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const city = getCity((await params).city);
   return {
-    title: `${city.name} İngilizce Kursu | Dil Atölyesi`,
+    title: `${city.name} İngilizce Kursu | Konuşarak Öğren`,
     description: `${city.locative} yüz yüze ve online İngilizce kursları. Ücretsiz seviye tespit sınavına katıl.`,
   };
 }

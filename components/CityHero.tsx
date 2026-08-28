@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { City } from "@/lib/cities";
 import { LeadForm } from "./LeadForm";
@@ -30,9 +31,15 @@ export function CityHero({ city }: { city: City }) {
   return (
     <main>
       <header className="siteHeader">
-        <Link className="brand" href="/istanbul" aria-label="Dil Atölyesi ana sayfa">
-          <span className="brandMark">d/a</span>
-          <span>Dil Atölyesi</span>
+        <Link className="brand" href="/istanbul" aria-label="Konuşarak Öğren ana sayfa">
+          <Image
+            src="/logo/ko-logo-yatay.png"
+            alt="Konuşarak Öğren"
+            width={180}
+            height={44}
+            priority
+            style={{ height: "44px", width: "auto" }}
+          />
         </Link>
         <nav aria-label="Ana menü">
           <a href="#programlar">Programlar</a>
@@ -43,17 +50,17 @@ export function CityHero({ city }: { city: City }) {
 
       <section className="hero" aria-labelledby="page-title">
         <div className="heroCopy">
-          <p className="locationTag"><span>●</span> {city.locative} yüz yüze ve online</p>
+          <p className="locationTag"><span>●</span> {city.locative} yüz yüze ve online konuşma eğitimi</p>
           <h1 id="page-title">
             {city.name} İngilizce Kursu
-            <em>Konuşmaya başladığın yer.</em>
+            <em>Konuşarak İngilizce Öğren, Özgüvenle Konuş.</em>
           </h1>
           <p className="lede">
-            {city.locative} yetişkinler, gençler ve profesyoneller için İngilizce eğitimi veren; seviyene, hedeflerine ve günlük programına göre şekillenen dil okuludur.
+            {city.locative} ezberci yöntemlerle vakit kaybetme! Birebir ana dili İngilizce uzman eğitmenlerle konuşma pratikleri yaparak akıcı İngilizceye ilk günden adım at. Seviyene ve hedeflerine özel konuşma okuluyla tanış.
           </p>
           <div className="microProof">
             <div className="avatars" aria-hidden="true"><i>EC</i><i>MK</i><i>SA</i></div>
-            <p><strong>Bu ay 318 kişi başladı.</strong><br />Sıradaki sınıfta yerini ayır.</p>
+            <p><strong>Bu ay {city.name}&apos;de 318 öğrenci derse başladı.</strong><br />Ücretsiz seviye tespit ve deneme dersinde yerini ayır.</p>
           </div>
         </div>
 

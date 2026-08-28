@@ -25,7 +25,7 @@ const teachers: Teacher[] = [
 ];
 
 const filters = ["Başlangıç", "Konuşma", "Dilbilgisi", "Çocuklar", "İleri seviye"];
-const colors = ["#1c55c7", "#9a6711", "#287d62", "#6c4c9a", "#9c3e55"];
+const colors = ["#309DFF"];
 
 function TeacherCard({ teacher, index }: { teacher: Teacher; index: number }) {
   const [imageFailed, setImageFailed] = useState(false);

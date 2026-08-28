@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 type Review = {
@@ -101,7 +102,16 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
             <div className={`phoneMock phone-${index + 1}`} key={screen.label}>
               <div className="phoneSpeaker" />
               <div className="phoneScreen">
-                <div className="appTop"><span>d/a</span><i>{String(9 + index).padStart(2, "0")}:24</i></div>
+                <div className="appTop">
+                  <Image
+                    src="/logo/ko-logo-papagan.png"
+                    alt="Konuşarak Öğren"
+                    width={24}
+                    height={27}
+                    style={{ height: "24px", width: "auto" }}
+                  />
+                  <i>{String(9 + index).padStart(2, "0")}:24</i>
+                </div>
                 <p>{screen.label}</p>
                 <h3>{screen.title}</h3>
                 <div className={`screenVisual ${screen.kind}`}>
