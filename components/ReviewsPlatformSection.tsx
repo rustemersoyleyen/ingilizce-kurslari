@@ -3,31 +3,9 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { getAssetPath } from "@/lib/basePath";
-
-type Review = {
-  name: string;
-  role: string;
-  districtIndex: number;
-  course: string;
-  rating: number;
-  title: string;
-  body: string;
-  source: string;
-};
-
-const reviews: Review[] = [
-  { name: "Ece Y.", role: "Ürün Tasarımcısı", districtIndex: 0, course: "İş İngilizcesi", rating: 5, title: "Toplantılarda artık sözü ben alıyorum", body: "Derslerin doğrudan iş hayatımdaki senaryolara göre ilerlemesi büyük fark yarattı. Sunum provaları sayesinde İngilizce konuşurken kendimi çok daha net ifade ediyorum.", source: "Kurs sonrası anket" },
-  { name: "Mert K.", role: "Yüksek Lisans Öğrencisi", districtIndex: 1, course: "IELTS / TOEFL", rating: 5, title: "Hedef puanımı ilk denemede geçtim", body: "Writing geri bildirimleri çok detaylıydı. Nerede zaman kaybettiğimi ve cevaplarımı nasıl yapılandırmam gerektiğini ilk haftadan itibaren anladım.", source: "Doğrulanmış kursiyer" },
-  { name: "Selin A.", role: "Pazarlama Uzmanı", districtIndex: 2, course: "Genel İngilizce", rating: 5, title: "Konuşma korkum birkaç haftada azaldı", body: "Sınıf ortamı yargılayıcı değil; hata yaptığımda konuşmaya devam etmem için destekleniyorum. Artık seyahatlerde İngilizce kullanmaktan çekinmiyorum.", source: "Kurs sonrası anket" },
-  { name: "Can D.", role: "Yazılım Geliştirici", districtIndex: 3, course: "Online İngilizce", rating: 4, title: "Yoğun programa gerçekten uyuyor", body: "Canlı online dersler ofis programıma uydu. Dijital alıştırmalar ve eğitmenin haftalık notları, dersten kopmadan düzenli ilerlememi sağladı.", source: "Doğrulanmış kursiyer" },
-  { name: "Zeynep T.", role: "Lise Öğrencisi", districtIndex: 0, course: "Genel İngilizce", rating: 5, title: "Ders değil, gerçek bir konuşma gibi", body: "Konular ilgi alanlarıma göre seçiliyor. Yeni kelimeleri ezberlemek yerine cümle içinde kullandığım için daha uzun süre hatırlıyorum.", source: "Kurs sonrası anket" },
-];
-
-const districts: Record<string, string[]> = {
-  İstanbul: ["Kadıköy", "Beşiktaş", "Bakırköy", "Üsküdar"],
-  Ankara: ["Çankaya", "Kızılay", "Bahçelievler", "Keçiören"],
-  İzmir: ["Konak", "Karşıyaka", "Bornova", "Buca"],
-};
+import { getReviewsForCity, Review } from "@/lib/reviews";
+import { getDistrictsForCity } from "@/lib/districts";
+import { getCity } from "@/lib/cities";
 
 const platformScreens = [
   { label: "Bugünkü plan", title: "15 dakikada devam et", kind: "progress", detail: "Konuşma · Ünite 06" },
@@ -37,18 +15,44 @@ const platformScreens = [
 ];
 
 function Stars({ count }: { count: number }) {
-  return <span className="reviewStars" aria-label={`${count} üzerinden 5 yıldız`}>{"★★★★★".slice(0, count)}<i>{"★★★★★".slice(count)}</i></span>;
+  return (
+    <span className="reviewStars" aria-label={`${count} üzerinden 5 yıldız`}>
+      {"★★★★★".slice(0, count)}
+      <i>{"★★★★★".slice(count)}</i>
+    </span>
+  );
 }
 
 export function ReviewsPlatformSection({ city }: { city: string }) {
-  const cityDistricts = districts[city] ?? ["Merkez", "Kuzey", "Güney", "Online"];
+  const cityObj = useMemo(() => getCity(city), [city]);
+  const reviews = useMemo(() => getReviewsForCity(city), [city]);
+  const districtList = useMemo(() => getDistrictsForCity(city).map((d) => d.name), [city]);
   const [filter, setFilter] = useState("Tümü");
-  const filters = ["Tümü", ...cityDistricts.slice(0, 3), "Genel İngilizce", "IELTS / TOEFL", "Online İngilizce"];
+  const filters = ["Tümü", ...districtList.slice(0, 3), "Genel İngilizce", "IELTS / TOEFL", "Online İngilizce"];
 
-  const visibleReviews = useMemo(() => reviews.filter((review) => {
-    if (filter === "Tümü") return true;
-    return review.course === filter || cityDistricts[review.districtIndex] === filter;
-  }), [filter, cityDistricts]);
+  // Dinamik Aggregate Hesaplama (Mevcut Şehir Yorum Verisinden)
+  const totalReviews = reviews.length;
+  const avgRating =
+    totalReviews > 0
+      ? (reviews.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1)
+      : "0.0";
+
+  const ratingCounts = useMemo(() => {
+    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    reviews.forEach((r) => {
+      if (r.rating in counts) {
+        counts[r.rating as keyof typeof counts]++;
+      }
+    });
+    return counts;
+  }, [reviews]);
+
+  const visibleReviews = useMemo(() => {
+    return reviews.filter((review) => {
+      if (filter === "Tümü") return true;
+      return review.course === filter || review.districtName === filter;
+    });
+  }, [filter, reviews]);
 
   return (
     <>
@@ -58,44 +62,138 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
             <p className="sectionKicker">Öğrenciler anlatıyor</p>
             <h2 id="reviews-title">{city} İngilizce Kursu Yorumları</h2>
           </div>
-          <p>Farklı hedeflerle başlayan öğrencilerin sınıf, eğitmen ve program deneyimlerini inceleyin; size en yakın öğrenme yolunu görün.</p>
+          <p>
+            Farklı hedeflerle başlayan öğrencilerin sınıf, eğitmen ve program deneyimlerini inceleyin; size en yakın öğrenme yolunu görün.
+          </p>
         </header>
+
+        {/* Google Business Profile Benzeri Aggregate Rating + AI Summary Kartı */}
+        <div className="reviewSummaryCard">
+          <div className="summaryScoreBox">
+            <strong>{avgRating}</strong>
+            <Stars count={Math.round(Number(avgRating))} />
+            <p>{totalReviews} doğrulanmış öğrenci değerlendirmesi</p>
+          </div>
+
+          <div className="summaryBarsBox">
+            {[5, 4, 3, 2, 1].map((star) => {
+              const count = ratingCounts[star as keyof typeof ratingCounts];
+              const pct = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+              return (
+                <div key={star} className="summaryBarRow">
+                  <span>{star} ★</span>
+                  <div className="summaryBarBg">
+                    <div className="summaryBarFill" style={{ width: `${pct}%` }} />
+                  </div>
+                  <small>{count}</small>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="summaryAiBox">
+            <span className="aiBadge">✨ AI Öğrenci Deneyim Özeti</span>
+            <p>
+              <strong>{city} İngilizce kursu öğrencilerimizin yorumlarında öne çıkanlar:</strong> Katılımcılarımız özellikle bire bir konuşma pratiklerini, iş hayatına uyarlanan sunum simülasyonlarını ve eğitmenlerin destekleyici yaklaşımını vurguluyor.
+            </p>
+          </div>
+        </div>
+
+        {/* Sözel Bağlantı / Natural Verbalization Alanı */}
+        <p className="verbalizationContext">
+          <span>Konuma ve programa göre filtreleyin:</span>{" "}
+          <strong>
+            {filter === "Tümü"
+              ? `${city} İngilizce kurs yorumlarını ve deneyimlerini inceliyorsunuz.`
+              : `${city} ${filter} İngilizce kursu yorumlarını inceliyorsunuz.`}
+          </strong>
+        </p>
 
         <div className="reviewFilters" aria-label="Yorumları filtrele">
           {filters.map((item) => (
-            <button className={filter === item ? "active" : ""} key={item} onClick={() => setFilter(item)}>{item}</button>
+            <button
+              className={filter === item ? "active" : ""}
+              key={item}
+              onClick={() => setFilter(item)}
+            >
+              {item} {item !== "Tümü" ? "yorumları" : ""}
+            </button>
           ))}
         </div>
 
         <p className="reviewResult">{visibleReviews.length} öğrenci deneyimi gösteriliyor</p>
+
         {visibleReviews.length ? (
           <div className="reviewRail">
             {visibleReviews.map((review) => (
-              <article className="reviewCard" key={review.name + review.course} itemScope itemType="https://schema.org/Review">
-                <div className="reviewMeta"><span>{review.course}</span><Stars count={review.rating} /></div>
-                <h3 itemProp="name">“{review.title}”</h3>
-                <p className="reviewBody" itemProp="reviewBody">{review.body}</p>
-                <div className="reviewAuthor" itemProp="author" itemScope itemType="https://schema.org/Person">
-                  <span className="reviewAvatar" aria-hidden="true">{review.name.slice(0, 2)}</span>
-                  <div><strong itemProp="name">{review.name}</strong><small>{review.role} · {cityDistricts[review.districtIndex]}</small></div>
+              <article
+                className="reviewCard"
+                key={review.name + review.course}
+                itemScope
+                itemType="https://schema.org/Review"
+              >
+                <div className="reviewMeta">
+                  <span>{review.course}</span>
+                  <Stars count={review.rating} />
                 </div>
-                <p className="reviewSource"><span>✓</span>{review.source}</p>
+                <h3 itemProp="name">“{review.title}”</h3>
+                <p className="reviewBody" itemProp="reviewBody">
+                  {review.body}
+                </p>
+                <div
+                  className="reviewAuthor"
+                  itemProp="author"
+                  itemScope
+                  itemType="https://schema.org/Person"
+                >
+                  <span className="reviewAvatar" aria-hidden="true">
+                    {review.name.slice(0, 2)}
+                  </span>
+                  <div>
+                    <strong itemProp="name">{review.name}</strong>
+                    <small>
+                      {review.role} · {review.districtName}
+                    </small>
+                  </div>
+                </div>
+                <p className="reviewSource">
+                  <span>✓</span>
+                  {review.source}
+                </p>
               </article>
             ))}
           </div>
-        ) : <div className="reviewEmpty">Bu filtre için henüz yorum bulunmuyor. Başka bir bölge veya program seçin.</div>}
+        ) : (
+          <div className="reviewEmpty">
+            Bu filtre için henüz yorum bulunmuyor. Başka bir bölge veya program seçin.
+          </div>
+        )}
       </section>
 
       <section className="platformSection" id="platform" aria-labelledby="platform-title">
         <div className="platformIntro">
           <p className="sectionKicker">Ders dışında da yanında</p>
-          <h2 id="platform-title">Online İngilizce Eğitim Platformu</h2>
-          <p>Canlı derslerini, kişisel çalışma planını, kelime tekrarlarını ve eğitmen geri bildirimlerini tek yerde takip et. Öğrenme ritmin cebinde seninle devam etsin.</p>
+          <h2 id="platform-title">{cityObj.name} İngilizce Kursu Mobil Uygulaması & Canlı Ders Takibi</h2>
+          <p>
+            {cityObj.locative} yüz yüze ve online İngilizce kursu alan öğrencilerimiz; canlı İngilizce derslerini, kişisel konuşma pratiği takvimini, kelime kartlarını ve eğitmen geri bildirimlerini mobil uygulamamız üzerinden 7/24 takip edebilir.
+          </p>
           <div className="storeButtons">
-            <a href="#seviye-testi" aria-label="Android uygulaması için bilgi al"><span className="storeIcon">▶</span><span><small>Android için</small>Google Play</span></a>
-            <a href="#seviye-testi" aria-label="iOS uygulaması için bilgi al"><span className="storeIcon apple">●</span><span><small>iPhone için</small>App Store</span></a>
+            <a href="#seviye-testi" aria-label={`${cityObj.name} İngilizce kursu Android uygulaması için bilgi al`}>
+              <span className="storeIcon">▶</span>
+              <span>
+                <small>Android için</small>Google Play
+              </span>
+            </a>
+            <a href="#seviye-testi" aria-label={`${cityObj.name} İngilizce kursu iOS uygulaması için bilgi al`}>
+              <span className="storeIcon apple">●</span>
+              <span>
+                <small>iPhone için</small>App Store
+              </span>
+            </a>
           </div>
-          <p className="platformNote"><span>✓</span>Kursa kayıtlı öğrenciler için ücretsiz erişim</p>
+          <p className="platformNote">
+            <span>✓</span>{cityObj.name} kurslarımıza kayıtlı tüm öğrenciler için mobil platform erişimi ücretsizdir.
+          </p>
         </div>
 
         <div className="phoneStage" aria-label="Eğitim platformundan örnek ekranlar">
@@ -116,13 +214,38 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
                 <p>{screen.label}</p>
                 <h3>{screen.title}</h3>
                 <div className={`screenVisual ${screen.kind}`}>
-                  {screen.kind === "progress" && <><span>6</span><i /><i /><i /></>}
-                  {screen.kind === "class" && <><span>AL</span><b>Katılmaya hazır</b></>}
-                  {screen.kind === "words" && <><strong>pitch</strong><em>/pɪtʃ/</em><b>sunum · fikir</b></>}
-                  {screen.kind === "score" && <><span>68%</span><i /></>}
+                  {screen.kind === "progress" && (
+                    <>
+                      <span>6</span>
+                      <i />
+                      <i />
+                      <i />
+                    </>
+                  )}
+                  {screen.kind === "class" && (
+                    <>
+                      <span>AL</span>
+                      <b>Katılmaya hazır</b>
+                    </>
+                  )}
+                  {screen.kind === "words" && (
+                    <>
+                      <strong>pitch</strong>
+                      <em>/pɪtʃ/</em>
+                      <b>sunum · fikir</b>
+                    </>
+                  )}
+                  {screen.kind === "score" && (
+                    <>
+                      <span>68%</span>
+                      <i />
+                    </>
+                  )}
                 </div>
                 <small>{screen.detail}</small>
-                <button type="button" tabIndex={-1}>Devam et <span>→</span></button>
+                <button type="button" tabIndex={-1}>
+                  Devam et <span>→</span>
+                </button>
               </div>
             </div>
           ))}

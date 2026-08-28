@@ -1,41 +1,53 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
-type Teacher = {
-  id: number;
-  name: string;
-  from: string;
-  university: string;
-  degree: string;
-  styles: string[];
-  interests: string[];
-  bio: string;
-};
-
-const teachers: Teacher[] = [
-  { id: 147, name: "Louis", from: "Atlanta, Georgia", university: "University of Georgia", degree: "İngiliz Dili ve Edebiyatı", styles: ["İleri seviye", "Esnek program", "Nazik yönlendirme"], interests: ["Tarih", "Müzik", "Doğa"], bio: "Asya ve Avrupa'dan öğrencilerle çalışan, konuşma pratiğini kültür ve gündelik hayatla birleştiren deneyimli bir ESL eğitmeni." },
-  { id: 152, name: "Perry", from: "Memphis, Tennessee", university: "University of Memphis", degree: "İngilizce Öğretmenliği", styles: ["Başlangıç", "Çocuklar", "Dilbilgisi"], interests: ["Müzik", "Basketbol", "Dans"], bio: "Müzik ve ritmi derslerine taşıyan Perry, ilk dersten itibaren öğrencinin rahatça konuşmasına odaklanır." },
-  { id: 223, name: "Alice", from: "Orlando, Florida", university: "University of Central Florida", degree: "İletişim ve Konaklama Yönetimi", styles: ["Başlangıç", "Konuşma", "Yavaş anlatım"], interests: ["Yazı", "Şiir", "Doğa yürüyüşü"], bio: "Misafirperverlik deneyimini dil eğitimine taşıyarak gerçek hayattaki konuşmalar için güvenli ve neşeli bir alan kurar." },
-  { id: 257, name: "Kellin", from: "Cambridge, Massachusetts", university: "MCPHS University", degree: "Sağlık Bilimleri", styles: ["Her seviye", "Esnek program", "Dilbilgisi"], interests: ["Seyahat", "Kitaplar", "Doğa"], bio: "Her öğrenciden yeni bir şey öğrenildiğine inanan Kellin, açık anlatımı ve sabırlı geri bildirimleriyle ilerlemeyi görünür kılar." },
-  { id: 260, name: "Gareth", from: "New York", university: "New York School of the Arts", degree: "Güzel Sanatlar", styles: ["Başlangıç", "Yaratıcı öğretim", "Çocuklar"], interests: ["Fotoğraf", "Çizim", "Sanat"], bio: "Sanat ve görsel hikâye anlatımını kullanarak kelimeleri hatırlamayı ve doğal cümle kurmayı kolaylaştırır." },
-  { id: 1026, name: "Harleigh", from: "Tennessee", university: "Tennessee State University", degree: "İngilizce Öğretmenliği", styles: ["İleri seviye", "Dilbilgisi", "Yavaş anlatım"], interests: ["Kitaplar", "Eğitim", "Seyahat"], bio: "Güçlü kelime ve dilbilgisi bilgisiyle özellikle akademik hedefleri olan öğrencilere sakin, yapılandırılmış bir yol sunar." },
-  { id: 1457, name: "Hunter", from: "Memphis, Tennessee", university: "University of Tennessee", degree: "Sosyal Bilimler", styles: ["Her seviye", "Konuşma", "Nazik yönlendirme"], interests: ["Basketbol", "Kitaplar", "Yemek"], bio: "Meraklı ve arkadaş canlısı yaklaşımıyla öğrencilerin hata yapma kaygısını azaltır, konuşmayı günlük bir alışkanlığa dönüştürür." },
-  { id: 12635, name: "Shelby", from: "Nashville, Tennessee", university: "Trevecca Nazarene University", degree: "İngilizce Öğretmenliği", styles: ["Başlangıç", "İleri seviye", "Yavaş anlatım"], interests: ["Yazı", "Bilim", "Seyahat"], bio: "Beş yıllık özel ders deneyimiyle karmaşık konuları sadeleştirir ve başlangıç seviyesindeki öğrenciler için net bir rota çizer." },
-];
+import { getTeachersForCity, Teacher } from "@/lib/teachers";
+import { getCity } from "@/lib/cities";
 
 const filters = ["Başlangıç", "Konuşma", "Dilbilgisi", "Çocuklar", "İleri seviye"];
 const colors = ["#309DFF"];
 
-function TeacherCard({ teacher, index }: { teacher: Teacher; index: number }) {
+const interestContextMap: Record<string, string> = {
+  Müzik: "müzik ve sahne sanatları",
+  Tarih: "tarih ve genel kültür",
+  Doğa: "doğa ve açık alan yaşamı",
+  "Doğa yürüyüşü": "doğa yürüyüşleri ve aktif yaşam",
+  Basketbol: "spor ve takım oyunları",
+  Dans: "sanat ve dans kültürü",
+  Yazı: "yaratıcı yazarlık ve edebiyat",
+  Şiir: "edebiyat ve şiir sohbetleri",
+  Seyahat: "seyahat ve günlük İngilizce diyaloglar",
+  Kitaplar: "kitap incelemeleri ve fikir tartışmaları",
+  Fotoğraf: "fotoğrafçılık ve görsel sanatlar",
+  Çizim: "tasarım ve görsel sanatlar",
+  Sanat: "kültür ve çağdaş sanat",
+  Eğitim: "akademik gelişim ve eğitim",
+  Yemek: "gastronomi ve mutfak kültürü",
+  Bilim: "bilim ve popüler teknoloji",
+};
+
+function TeacherCard({ teacher, index, cityName }: { teacher: Teacher; index: number; cityName: string }) {
   const [imageFailed, setImageFailed] = useState(false);
   const accent = colors[index % colors.length];
+
+  const primaryInterests = teacher.interests.slice(0, 2);
+  const contextPhrases = primaryInterests
+    .map((interest) => interestContextMap[interest] || interest.toLocaleLowerCase("tr-TR"))
+    .join(" ve ");
 
   return (
     <article className="teacherCard" itemScope itemType="https://schema.org/Person" style={{ "--teacher-accent": accent } as React.CSSProperties}>
       <div className="teacherPhoto">
         {!imageFailed ? (
-          <img src={`https://e-teacher.org/users.profile/${teacher.id}.jpg`} alt={`İngilizce eğitmeni ${teacher.name}`} onError={() => setImageFailed(true)} itemProp="image" />
+          <img
+            src={`https://e-teacher.org/users.profile/${teacher.id}.jpg`}
+            alt={`İngilizce eğitmeni ${teacher.name}`}
+            onError={() => setImageFailed(true)}
+            itemProp="image"
+            loading="lazy"
+            width={120}
+            height={120}
+          />
         ) : (
           <span aria-hidden="true">{teacher.name.slice(0, 2).toUpperCase()}</span>
         )}
@@ -51,12 +63,20 @@ function TeacherCard({ teacher, index }: { teacher: Teacher; index: number }) {
           {teacher.styles.map((style) => <li key={style}>{style}</li>)}
         </ul>
         <p className="teacherInterests"><span>İlgi alanları</span>{teacher.interests.join(" · ")}</p>
+        
+        {/* Doğal Sözel Bağlantı / Verbalization Kutu */}
+        <div className="teacherPracticeNote">
+          <span>💬 Konuşma Odaklı Ders:</span>
+          Teacher {teacher.name} ile <strong>{contextPhrases}</strong> hakkında {cityName}&apos;de bire bir İngilizce konuşma pratiği yapın.
+        </div>
       </div>
     </article>
   );
 }
 
 export function TeachersSection({ city }: { city: string }) {
+  const cityObj = useMemo(() => getCity(city), [city]);
+  const teachers = useMemo(() => getTeachersForCity(city), [city]);
   const [filter, setFilter] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
@@ -67,16 +87,18 @@ export function TeachersSection({ city }: { city: string }) {
       const haystack = [teacher.name, teacher.degree, teacher.university, ...teacher.interests].join(" ").toLocaleLowerCase("tr-TR");
       return matchesFilter && (!normalizedQuery || haystack.includes(normalizedQuery));
     });
-  }, [filter, query]);
+  }, [teachers, filter, query]);
 
   return (
     <section className="teachersSection" id="egitmenler" aria-labelledby="teachers-title">
       <div className="teachersHeader">
         <div>
           <p className="sectionKicker">Ana dili İngilizce · Bire bir destek</p>
-          <h2 id="teachers-title">{city} İngilizce Kursu Eğitmenleri</h2>
+          <h2 id="teachers-title">{cityObj.name} İngilizce Kursu Eğitmenleri</h2>
         </div>
-        <p>Öğrenme hızınıza ve hedefinize uygun eğitmeni seçin. Her eğitmen konuşma pratiğini, yapılandırılmış geri bildirimi ve gerçek yaşam İngilizcesini kendi uzmanlığıyla birleştirir.</p>
+        <p>
+          {cityObj.locative} akıcı İngilizce konuşma pratiği yapmak isteyen öğrencilerimiz için anadili İngilizce olan uzman eğitmen kadromuzu inceleyin. Her eğitmen konuşma pratiğini kendi uzmanlığıyla birleştirir. Program detayları için <a href="#programlar" className="contextualLink">kurs türlerini inceleyin ↗</a>.
+        </p>
       </div>
 
       <div className="teacherTools">
@@ -96,7 +118,11 @@ export function TeachersSection({ city }: { city: string }) {
 
       <p className="teacherCount">{teachers.length} eğitmenden {visibleTeachers.length} tanesi gösteriliyor</p>
       {visibleTeachers.length ? (
-        <div className="teacherRail">{visibleTeachers.map((teacher, index) => <TeacherCard key={teacher.id} teacher={teacher} index={index} />)}</div>
+        <div className="teacherRail">
+          {visibleTeachers.map((teacher, index) => (
+            <TeacherCard key={teacher.id} teacher={teacher} index={index} cityName={cityObj.name} />
+          ))}
+        </div>
       ) : (
         <div className="teacherEmpty">Bu aramaya uygun eğitmen bulunamadı. Aramayı temizleyin veya başka bir öğretim tarzı seçin.</div>
       )}

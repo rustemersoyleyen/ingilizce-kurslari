@@ -1,3 +1,8 @@
+import { District, getDistrictsForCity } from "./districts";
+import { Teacher, getTeachersForCity } from "./teachers";
+import { Review, getReviewsForCity } from "./reviews";
+import { CourseType, getCourseTypesForCity } from "./courseTypes";
+
 export type City = {
   slug: string;
   name: string;
@@ -6,6 +11,13 @@ export type City = {
   studentCount: string;
   instructorCount: string;
   successRate: string;
+};
+
+export type FullCityData = City & {
+  districts: District[];
+  teachers: Teacher[];
+  reviews: Review[];
+  courseTypes: CourseType[];
 };
 
 const cities: Record<string, City> = {
@@ -43,6 +55,15 @@ const toTitleCase = (value: string) =>
     .replaceAll("-", " ")
     .replace(/(^|\s)\S/g, (letter) => letter.toLocaleUpperCase("tr-TR"));
 
+export function isValidCity(slug: string): boolean {
+  const normalized = slug.toLocaleLowerCase("tr-TR");
+  return Boolean(cities[normalized]);
+}
+
+export function getAllCitySlugs(): string[] {
+  return Object.keys(cities);
+}
+
 export function getCity(slug: string): City {
   const normalized = slug.toLocaleLowerCase("tr-TR");
   if (cities[normalized]) return cities[normalized];
@@ -56,5 +77,16 @@ export function getCity(slug: string): City {
     studentCount: "8.400+",
     instructorCount: "146",
     successRate: "%94",
+  };
+}
+
+export function getFullCityData(slug: string): FullCityData {
+  const city = getCity(slug);
+  return {
+    ...city,
+    districts: getDistrictsForCity(slug),
+    teachers: getTeachersForCity(slug),
+    reviews: getReviewsForCity(slug),
+    courseTypes: getCourseTypesForCity(slug),
   };
 }

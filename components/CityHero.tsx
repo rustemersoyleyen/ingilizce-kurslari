@@ -10,6 +10,7 @@ import { DistrictCoursesSection } from "./DistrictCoursesSection";
 import { CefrProgramsSection } from "./CefrProgramsSection";
 import { EnrollmentProcessSection } from "./EnrollmentProcessSection";
 import { PricingSection } from "./PricingSection";
+import { FAQSection } from "./FAQSection";
 import { RelatedLinksSection } from "./RelatedLinksSection";
 
 const Shield = () => (
@@ -32,7 +33,7 @@ export function CityHero({ city }: { city: City }) {
   return (
     <main>
       <header className="siteHeader">
-        <Link className="brand" href="/istanbul" aria-label="Konuşarak Öğren ana sayfa">
+        <Link className="brand" href={`/${city.slug}/`} aria-label="Konuşarak Öğren ana sayfa">
           <Image
             src={getAssetPath("/logo/ko-logo-yatay.png")}
             alt="Konuşarak Öğren"
@@ -90,6 +91,7 @@ export function CityHero({ city }: { city: City }) {
       <CefrProgramsSection />
       <EnrollmentProcessSection city={city.name} />
       <PricingSection city={city.name} />
+      <FAQSection city={city.name} />
       <RelatedLinksSection city={city.name} />
     </main>
   );

@@ -1,0 +1,190 @@
+export type CityFAQ = {
+  id: string;
+  city: string;
+  question: string;
+  answer: string;
+  context?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  headingLevel: 2 | 3 | 4;
+  category?: string;
+};
+
+export const defaultFaqs: Record<string, CityFAQ[]> = {
+  istanbul: [
+    {
+      id: "ist-1",
+      city: "İstanbul",
+      question: "İstanbul'da İngilizce kursuna hangi seviyeden başlayabilirim?",
+      context: "İstanbul'da Kadıköy, Beşiktaş, Bakırköy, Üsküdar ve Şişli sınıflarımız ile canlı online derslerimizde her seviyeye uygun program açılmaktadır.",
+      answer: "Ücretsiz seviye tespit sınavımız ve eğitim danışmanı görüşmesinin ardından A1–C2 seviyeleri arasında size en uygun sınıfa yerleştirilirsiniz.",
+      ctaLabel: "Ücretsiz Seviye Tespitini Başlat ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Genel",
+    },
+    {
+      id: "ist-2",
+      city: "İstanbul",
+      question: "İstanbul İngilizce kursu ödemelerinde taksit seçeneği var mı?",
+      context: "İstanbul'daki bireysel ve kurumsal katılımcılar için esnek bütçe çözümleri sunulur.",
+      answer: "Aylık ödeme planı veya kredi kartına taksit imkanları mevcuttur. Seçtiğiniz ders yoğunluğu ve eğitim paketine göre ödeme planı netleştirilir.",
+      ctaLabel: "Fiyat ve Taksit Teklifi Alın ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Fiyatlandırma",
+    },
+    {
+      id: "ist-3",
+      city: "İstanbul",
+      question: "İstanbul'da erken kayıt veya grup indirimi uygulanıyor mu?",
+      context: "İstanbul şubelerimizde ve canlı online derslerimizde dönemsel kontenjan indirimleri tanımlanmaktadır.",
+      answer: "Yeni açılan kurlardan önce kayıt yaptıran katılımcılara erken kayıt avantajı sunulur. Ayrıca arkadaş grupları veya şirket çalışanları birlikte kaydolduğunda grup indirimi uygulanır.",
+      ctaLabel: "Grup Teklifi İsteyin ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Fiyatlandırma",
+    },
+    {
+      id: "ist-4",
+      city: "İstanbul",
+      question: "İstanbul'da IELTS ve TOEFL sınav hazırlık dersleri nasıl işlenir?",
+      context: "Sınav formatını ezberletmek yerine writing, speaking ve zaman yönetimini geliştiren akademik hazırlık.",
+      answer: "Bire bir veya küçük gruplar halinde deneme sınavları, writing değerlendirmeleri ve puan analizi desteği ile hedef puana stratejik olarak ilerlersiniz.",
+      ctaLabel: "Sınav Programlarını İnceleyin ↗",
+      ctaHref: "#programlar",
+      headingLevel: 3,
+      category: "Sınav Hazırlık",
+    },
+    {
+      id: "ist-5",
+      city: "İstanbul",
+      question: "İstanbul'da İş İngilizcesi ve şirketlere özel eğitim veriliyor mu?",
+      context: "İstanbul'daki profesyoneller ve kurumsal ekipler için sektöre özel içerik hazırlanmaktadır.",
+      answer: "Evet. Toplantı, sunum, mülakat ve e-posta yazışması pratikleri şirketinizin ve sektörünüzün gerçek ihtiyaçlarına göre özelleştirilir.",
+      ctaLabel: "Kurumsal Teklif Alın ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "İş İngilizcesi",
+    },
+    {
+      id: "ist-6",
+      city: "İstanbul",
+      question: "İstanbul'da kaçırılan dersler için online telafi imkanı var mı?",
+      context: "Yoğun İstanbul temposunda derse katılamadığınız durumlarda öğrenme devamlılığı korunur.",
+      answer: "Uygun sınıf ve saatlerde kaçırılan oturumlar canlı online sınıflarımız veya dijital platform alıştırmalarıyla telafi edilebilir.",
+      ctaLabel: "Platform Detaylarını Görün ↗",
+      ctaHref: "#platform",
+      headingLevel: 3,
+      category: "Online & Telafi",
+    },
+  ],
+  ankara: [
+    {
+      id: "ank-1",
+      city: "Ankara",
+      question: "Ankara'da İngilizce kursuna hangi seviyeden başlayabilirim?",
+      context: "Ankara Çankaya, Kızılay, Bahçelievler, Keçiören ve Ümitköy sınıflarımızda tüm seviyeler için sınıflar açılmaktadır.",
+      answer: "Ücretsiz seviye tespit sınavı sonrasında A1–C2 kurlarından hedefinize en uygun sınıfa yerleştirilirsiniz.",
+      ctaLabel: "Ücretsiz Seviye Tespitini Başlat ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Genel",
+    },
+    {
+      id: "ank-2",
+      city: "Ankara",
+      question: "Ankara İngilizce kursu ödemelerinde taksit imkanı var mı?",
+      context: "Ankara'daki üniversite öğrencileri ve kamu/özel sektör çalışanları için esnek takvim ve bütçe seçenekleri mevcuttur.",
+      answer: "Program süresine göre aylık ödeme veya kredi kartına taksit planı oluşturulabilir.",
+      ctaLabel: "Fiyat Teklifi Alın ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Fiyatlandırma",
+    },
+    {
+      id: "ank-3",
+      city: "Ankara",
+      question: "Ankara'da kamu çalışanları ve öğrenciler için grup indirimi var mı?",
+      context: "Grup katılımlarında veya arkadaş kayıtlarında özel avantaj tanımlanır.",
+      answer: "Aynı kur ve sınıfa katılan gruplar için kişi sayısına göre grup indirimi teklifi hazırlanır.",
+      ctaLabel: "Grup Teklifi İsteyin ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Fiyatlandırma",
+    },
+    {
+      id: "ank-4",
+      city: "Ankara",
+      question: "Ankara'da akademik ve sınav odaklı İngilizce eğitimi var mı?",
+      context: "Yüksek lisans, doktora, vize ve kariyer hedefleri için yapılandırılmış hazırlık.",
+      answer: "IELTS ve TOEFL gibi uluslararası sınavlarda writing geri bildirimi ve deneme analizi içeren gruplar açılmaktadır.",
+      ctaLabel: "Sınav Programlarını İnceleyin ↗",
+      ctaHref: "#programlar",
+      headingLevel: 3,
+      category: "Sınav Hazırlık",
+    },
+    {
+      id: "ank-5",
+      city: "Ankara",
+      question: "Ankara'da kaçırılan derslerin telafisi nasıl yapılır?",
+      context: "Ders kaçırdığınızda online canlı sınıflar veya dijital panel üzerinden telafi sağlanır.",
+      answer: "Müsait sınıflara göre telafi dersi planlaması yapılır.",
+      ctaLabel: "Platform Detaylarını Görün ↗",
+      ctaHref: "#platform",
+      headingLevel: 3,
+      category: "Online & Telafi",
+    },
+  ],
+  izmir: [
+    {
+      id: "izm-1",
+      city: "İzmir",
+      question: "İzmir'de İngilizce kursuna hangi seviyeden başlayabilirim?",
+      context: "İzmir Konak, Karşıyaka, Bornova, Buca ve Balçova noktalarımızda seviyenize uygun grup ve konuşma sınıfları bulunur.",
+      answer: "Ücretsiz seviye analizinin ardından A1 seviyesinden C2 seviyesine kadar doğru sınıfa yerleşirsiniz.",
+      ctaLabel: "Ücretsiz Seviye Tespitini Başlat ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Genel",
+    },
+    {
+      id: "izm-2",
+      city: "İzmir",
+      question: "İzmir İngilizce kursu ücretleri taksitle ödenebilir mi?",
+      context: "İzmir'deki öğrenciler ve profesyoneller için esnek ödeme planları sunulur.",
+      answer: "Seçilen programa göre aylık ödeme veya kredi kartına taksit olanakları mevcuttur.",
+      ctaLabel: "Fiyat Teklifi Alın ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "Fiyatlandırma",
+    },
+    {
+      id: "izm-3",
+      city: "İzmir",
+      question: "İzmir'de konuşma kulübü ve pratik sınıfları fiyata dahil mi?",
+      context: "İzmir şubelerimizde aktif kursiyerler için konuşma etkinlikleri düzenlenmektedir.",
+      answer: "Evet. Program süresince konuşma kulübü ve dijital materyal erişimi ücrete dahildir.",
+      ctaLabel: "Programları İnceleyin ↗",
+      ctaHref: "#programlar",
+      headingLevel: 3,
+      category: "Genel",
+    },
+    {
+      id: "izm-4",
+      city: "İzmir",
+      question: "İzmir'de İş İngilizcesi ve bire bir özel ders imkanı var mı?",
+      context: "İzmir'deki iş dünyası ve yöneticiler için bire bir ve kurumsal çözümler.",
+      answer: "Toplantı, sunum ve mülakat simülasyonları içeren İş İngilizcesi ile bire bir koçluk programları verilmektedir.",
+      ctaLabel: "Kişisel Teklif Alın ↗",
+      ctaHref: "#seviye-testi",
+      headingLevel: 3,
+      category: "İş İngilizcesi",
+    },
+  ],
+};
+
+export function getFaqsForCity(citySlug: string): CityFAQ[] {
+  const normalized = citySlug.toLocaleLowerCase("tr-TR");
+  return defaultFaqs[normalized] || defaultFaqs.istanbul;
+}
