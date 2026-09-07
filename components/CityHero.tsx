@@ -22,10 +22,26 @@ const Shield = () => (
 
 export function CityHero({ city }: { city: City }) {
   const stats = [
-    { value: city.studentCount, label: "aktif öğrenci" },
-    { value: city.instructorCount, label: "uzman eğitmen" },
-    { value: city.campusCount, label: "şehirde erişim" },
-    { value: city.successRate, label: "hedef başarı oranı" },
+    {
+      value: city.studentCount,
+      label: "aktif öğrenci",
+      hoverText: city.activeStudentDetail ?? `${city.locative} ${city.studentCount} öğrencimiz aktif ders almaktadır.`,
+    },
+    {
+      value: city.localStudentCount ?? "1.000+",
+      label: `${city.locative} öğrenci`,
+      hoverText: `${city.locative} ${city.localStudentCount ?? "1.000+"} kayıtlı öğrencimiz bire bir konuşma okulu deneyimi yaşamaktadır.`,
+    },
+    {
+      value: city.instructorCount,
+      label: "uzman eğitmen",
+      hoverText: `${city.locative} ${city.instructorCount} uzman ve ana dili İngilizce olan eğitmenimiz ders vermektedir.`,
+    },
+    {
+      value: city.successRate,
+      label: "hedef başarı oranı",
+      hoverText: `${city.locative} eğitim alan öğrencilerimizin ${city.successRate}'ü hedeflediği CEFR seviyesine ulaşmıştır.`,
+    },
   ];
 
   const trust = ["MEB onaylı program", "Uluslararası sertifika", "4,9 / 5 öğrenci puanı", "İlk 14 gün iade garantisi"];
@@ -58,23 +74,27 @@ export function CityHero({ city }: { city: City }) {
             <em>Konuşarak İngilizce Öğren, Özgüvenle Konuş.</em>
           </h1>
           <p className="lede">
-            {city.locative} ezberci yöntemlerle vakit kaybetme! Birebir ana dili İngilizce uzman eğitmenlerle konuşma pratikleri yaparak akıcı İngilizceye ilk günden adım at. Seviyene ve hedeflerine özel konuşma okuluyla tanış.
+            {city.locative} ezberci yöntemlerle vakit kaybetme! Birebir ana dili İngilizce uzman eğitmenlerle konuşma pratikleri yaparak akıcı İngilizceye ilk günden adım at.
           </p>
-          <div className="microProof">
-            <div className="avatars" aria-hidden="true"><i>EC</i><i>MK</i><i>SA</i></div>
-            <p><strong>Bu ay {city.name}&apos;de 318 öğrenci derse başladı.</strong><br />Ücretsiz seviye tespit ve deneme dersinde yerini ayır.</p>
-          </div>
         </div>
 
         <div id="seviye-testi"><LeadForm city={city.name} /></div>
+
+        <div className="microProof">
+          <div className="avatars" aria-hidden="true"><i>EC</i><i>MK</i><i>SA</i></div>
+          <p><strong>Bu ay {city.name}&apos;de 318 öğrenci derse başladı.</strong> · Ücretsiz seviye tespit ve deneme dersinde yerini ayır.</p>
+        </div>
       </section>
 
       <section className="proofPanel" id="neden-biz" aria-label="Başarı ve güven göstergeleri">
         <div className="statsRow">
           {stats.map((stat) => (
-            <div className="stat" key={stat.label}>
+            <div className="stat" key={stat.label} tabIndex={0}>
               <strong>{stat.value}</strong>
               <span>{stat.label}</span>
+              <div className="statTooltip" role="tooltip">
+                <p>{stat.hoverText}</p>
+              </div>
             </div>
           ))}
         </div>

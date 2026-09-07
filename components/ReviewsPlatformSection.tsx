@@ -136,11 +136,11 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
                   <span>{review.course}</span>
                   <Stars count={review.rating} />
                 </div>
-                <h3 itemProp="name">“{review.title}”</h3>
-                <p className="reviewBody" itemProp="reviewBody">
-                  {review.body}
-                </p>
-                <div
+                <blockquote className="reviewQuote" itemProp="reviewBody">
+                  <strong className="reviewTitle">“{review.title}”</strong>
+                  <p className="reviewBody">{review.body}</p>
+                </blockquote>
+                <cite
                   className="reviewAuthor"
                   itemProp="author"
                   itemScope
@@ -155,7 +155,7 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
                       {review.role} · {review.districtName}
                     </small>
                   </div>
-                </div>
+                </cite>
                 <p className="reviewSource">
                   <span>✓</span>
                   {review.source}

@@ -166,3 +166,39 @@ Tüm UI ve içerik değişiklikleri `DESIGN_SYSTEM.md` ile uyumlu olmalıdır.
 - Logo oranı, rengi veya yapısı değiştirilmemelidir.
 - Tasarım referanslarıyla çelişki varsa önce referanslar tekrar kontrol edilmelidir.
 - `TBD` olarak işaretlenen alanlar kullanıcı onayı veya yeni kaynak olmadan kesin değer gibi uygulanmamalıdır.
+
+## 19. Hero & Form Above-The-Fold Kuralları
+
+- Hero bölümü **merkezi tek sütun (single-column)** kompozisyonuna sahip olmalıdır.
+- Form alanları (input) ve CTA butonu masaüstü ekranda ilk bakışta (above the fold) kaydırma yapmadan görünür olmalıdır.
+- Bu görünürlüğü sağlamak için hero vertical padding (`24px 0 28px`), header yüksekliği (`72px`), hero içerik gap (`16px`) ve lede paragraf uzunluğu kompakt tutulmalıdır.
+
+## 20. Proof Panel (Sosyal Kanıt & İstatistikler) Standartları
+
+- İstatistik barı tam **4 sütundan** oluşmalıdır:
+  1. Toplam öğrenci sayısı (Örn: `8.400+`)
+  2. Şehre özel dinamik aktif öğrenci sayısı (Örn: `${city.name}'de 1.000+`)
+  3. Ana dili İngilizce uzman eğitmen sayısı (Örn: `1.200+`)
+  4. Ölçümlenen konuşma başarı oranı (Örn: `%98`)
+- Şube/fiziki erişim gibi online modelle çelişen veriler kullanılmamalıdır.
+- Hover/Tooltip bileşenleri **aydınlık (light) tema** olmalıdır: `#ffffff` arkaplan, `#bfdbfe` border ve koyu renkli okunabilir metin. Koyu/dark mode tooltip veya gereksiz "BİLGİ" etiketleri kullanılmamalıdır.
+- Tooltip metni dinamik şehir verisini içermelidir (Örn: `${city.locative} ${city.studentCount} öğrencimiz aktif ders almaktadır.`).
+
+## 21. Semantik HTML ve Bileşen Standartları
+
+- **Kurs Tipleri (Course Types):**
+  - Kartlar semantik olarak `<ul className="courseGrid">` ve `<li className="courseCard">` içinde listelenmelidir.
+  - Başlıkta çift numaralandırma yapılmamalı; doğrudan `courseTopline` h3 içerisinde `{index + 1}. {course.title}` formatında tekil olmalıdır (Örn: `1. Genel İngilizce`).
+- **Kullanıcı Yorumları (Reviews):**
+  - Yorum kartlarında gereksiz `<h3>` etiketi yerine doğrudan alıntı semantiği (`<blockquote className="reviewQuote" itemProp="reviewBody">`) kullanılmalıdır.
+  - Başlık `.reviewTitle` (`<strong>`), yorum metni `.reviewBody` (`<p>`) olarak blockquote içerisinde yer almalıdır.
+  - Yorum yazarı semantik `<cite className="reviewAuthor" itemProp="author">` etiketi ile tanımlanmalıdır.
+  - Kart gridi 4 sütunlu düzende tutulmalıdır.
+- **Fiyat / Karşılaştırma Tablosu:**
+  - Tablo başlığında ve kriter satırlarında `${city.name}'deki Geleneksel Kurslar` ifadesi dinamik şehir enjeksiyonuyla kullanılmalıdır.
+
+## 22. Standart Bölüm Boşlukları (Section Spacing)
+
+- Sayfadaki tüm ana içerik bölümleri (`.coursesSection`, `.reviewsSection`, `.districtSection`, `.teachersSection`, `.cefrSection`, `.enrollmentSection`, `.pricingSection`, `.faqSection`, `.relatedSection`) standart olarak `padding: 56px 0 36px;` dikey boşluk ritmine uymalıdır.
+- Bölümler arasında görsel ritim ve dikey denge tutarlı olmalıdır.
+

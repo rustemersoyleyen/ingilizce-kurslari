@@ -48,17 +48,18 @@ export function CourseTypesSection({ city }: { city: string }) {
         </p>
       </header>
 
-      <div className="courseGrid">
+      <ul className="courseGrid">
         {courseTypes.map((course, index) => (
-          <article className={`courseCard${course.featured ? " featured" : ""}`} id={`program-${index + 1}`} key={course.title}>
+          <li className={`courseCard${course.featured ? " featured" : ""}`} id={`program-${index + 1}`} key={course.title}>
             <div className="courseTopline">
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div className="courseIconWrapper" aria-hidden="true">
-                <CourseIcon kind={course.iconKind} />
+              <h3>{index + 1}. {course.title}</h3>
+              <div className="courseBadges">
+                <div className="courseIconWrapper" aria-hidden="true">
+                  <CourseIcon kind={course.iconKind} />
+                </div>
+                <strong>{course.code}</strong>
               </div>
-              <strong>{course.code}</strong>
             </div>
-            <h3>{course.title}</h3>
             <p className="coursePromise">{course.promise}</p>
             <p className="courseDescription">{course.description}</p>
 
@@ -79,9 +80,9 @@ export function CourseTypesSection({ city }: { city: string }) {
                 </details>
               ))}
             </div>
-          </article>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <aside className="courseHelp">
         <div><span className="helpPulse" />Karar veremedin mi?</div>

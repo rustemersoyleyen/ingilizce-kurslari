@@ -83,8 +83,8 @@ export function PricingSection({ city }: { city: string }) {
             <thead>
               <tr>
                 <th scope="col">Karşılaştırma Kriteri</th>
-                <th scope="col" className="highlightHeader">Online Canlı Eğitim (Konuşarak Öğren)</th>
-                <th scope="col">Geleneksel Fiziksel Şube Eğitimi</th>
+                <th scope="col" className="highlightHeader">{cityObj.name} Online Canlı Eğitim (Konuşarak Öğren)</th>
+                <th scope="col">{cityObj.name} Geleneksel Şube Kursları</th>
               </tr>
             </thead>
             <tbody>

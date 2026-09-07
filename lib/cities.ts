@@ -11,6 +11,8 @@ export type City = {
   studentCount: string;
   instructorCount: string;
   successRate: string;
+  activeStudentDetail?: string;
+  localStudentCount?: string;
 };
 
 export type FullCityData = City & {
@@ -27,6 +29,7 @@ const cities: Record<string, City> = {
     locative: "İstanbul'da",
     campusCount: "12 şube",
     studentCount: "8.400+",
+    localStudentCount: "2.500+",
     instructorCount: "146",
     successRate: "%94",
   },
@@ -36,6 +39,7 @@ const cities: Record<string, City> = {
     locative: "Ankara'da",
     campusCount: "7 şube",
     studentCount: "4.200+",
+    localStudentCount: "1.000+",
     instructorCount: "82",
     successRate: "%93",
   },
@@ -45,6 +49,7 @@ const cities: Record<string, City> = {
     locative: "İzmir'de",
     campusCount: "5 şube",
     studentCount: "3.100+",
+    localStudentCount: "850+",
     instructorCount: "64",
     successRate: "%95",
   },
