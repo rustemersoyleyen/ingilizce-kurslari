@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { getTeachersForCity, Teacher } from "@/lib/teachers";
 import { getCity } from "@/lib/cities";
+import { getDistrictsForCity } from "@/lib/districts";
 
 const filters = ["Başlangıç", "Konuşma", "Dilbilgisi", "Çocuklar", "İleri seviye"];
 const colors = ["#309DFF"];
@@ -26,7 +27,7 @@ const interestContextMap: Record<string, string> = {
   Bilim: "bilim ve popüler teknoloji",
 };
 
-function TeacherCard({ teacher, index, cityName }: { teacher: Teacher; index: number; cityName: string }) {
+function TeacherCard({ teacher, index, cityName, districtName }: { teacher: Teacher; index: number; cityName: string; districtName: string }) {
   const [imageFailed, setImageFailed] = useState(false);
   const accent = colors[index % colors.length];
 
@@ -62,7 +63,27 @@ function TeacherCard({ teacher, index, cityName }: { teacher: Teacher; index: nu
         <ul className="teacherTags" aria-label="Öğretim tarzları">
           {teacher.styles.map((style) => <li key={style}>{style}</li>)}
         </ul>
-        <p className="teacherInterests"><span>İlgi alanları</span>{teacher.interests.join(" · ")}</p>
+        <div className="teacherInterests">
+          <span className="teacherInterestsTitle">İlgi alanları</span>
+          <ul className="teacherInterestsList" aria-label={`Teacher ${teacher.name} ilgi alanları`}>
+            {teacher.interests.map((interest, idx) => {
+              const infoText = `${cityName} ${districtName} şubesinde Teacher ${teacher.name} ile ${interest} üzerine konuşun`;
+              return (
+                <li key={interest}>
+                  {idx > 0 && <span aria-hidden="true" className="interestSeparator"> · </span>}
+                  <span
+                    className="interestTag"
+                    title={infoText}
+                    aria-label={infoText}
+                    tabIndex={0}
+                  >
+                    {interest}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         
         {/* Doğal Sözel Bağlantı / Verbalization Kutu */}
         <div className="teacherPracticeNote">
@@ -76,6 +97,8 @@ function TeacherCard({ teacher, index, cityName }: { teacher: Teacher; index: nu
 
 export function TeachersSection({ city }: { city: string }) {
   const cityObj = useMemo(() => getCity(city), [city]);
+  const districts = useMemo(() => getDistrictsForCity(city), [city]);
+  const primaryDistrictName = districts[0]?.name || "Merkez";
   const teachers = useMemo(() => getTeachersForCity(city), [city]);
   const [filter, setFilter] = useState<string | null>(null);
   const [query, setQuery] = useState("");
@@ -120,7 +143,7 @@ export function TeachersSection({ city }: { city: string }) {
       {visibleTeachers.length ? (
         <div className="teacherRail">
           {visibleTeachers.map((teacher, index) => (
-            <TeacherCard key={teacher.id} teacher={teacher} index={index} cityName={cityObj.name} />
+            <TeacherCard key={teacher.id} teacher={teacher} index={index} cityName={cityObj.name} districtName={primaryDistrictName} />
           ))}
         </div>
       ) : (

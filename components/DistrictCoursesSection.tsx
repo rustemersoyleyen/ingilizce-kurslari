@@ -34,15 +34,29 @@ export function DistrictCoursesSection({ city }: { city: string }) {
             <p>{district.description}</p>
             <div className="districtActions">
               <a className="districtPrimary" href="#seviye-testi">Ücretsiz seviyeni belirle <span>↗</span></a>
-              <a href="#programlar">{district.name} programları</a>
+              <a href="#programlar">{district.name} İngilizce Kursu</a>
             </div>
           </div>
           <div className="districtList">
-            <span>Bu ilçenin avantajları</span>
+            <div className="districtListHeader">
+              <svg viewBox="0 0 24 24" role="img" aria-labelledby={`adv-title-${district.name} adv-desc-${district.name}`} className="districtHeaderIcon" width="20" height="20">
+                <title id={`adv-title-${district.name}`}>{city} {district.name} İngilizce Kursu Avantajları</title>
+                <desc id={`adv-desc-${district.name}`}>{city} {district.name} bölgesinde konuşma odaklı İngilizce kursunun sağladığı avantajlar ve imkanlar</desc>
+                <path fill="currentColor" d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z"/>
+              </svg>
+              <span>Bu ilçenin avantajları</span>
+            </div>
             <ul>{district.advantages.map((item) => <li key={item}><i>✓</i>{item}</li>)}</ul>
           </div>
           <div className="districtList audience">
-            <span>Kimler için uygun?</span>
+            <div className="districtListHeader">
+              <svg viewBox="0 0 24 24" role="img" aria-labelledby={`aud-title-${district.name} aud-desc-${district.name}`} className="districtHeaderIcon" width="20" height="20">
+                <title id={`aud-title-${district.name}`}>{city} {district.name} İngilizce Kursu Kimler İçin Uygun</title>
+                <desc id={`aud-desc-${district.name}`}>{city} {district.name} İngilizce kursunun katılımcı profili ve kimler için uygun olduğu bilgisi</desc>
+                <path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              </svg>
+              <span>Kimler için uygun?</span>
+            </div>
             <ul>{district.audience.map((item) => <li key={item}><i>→</i>{item}</li>)}</ul>
           </div>
         </div>

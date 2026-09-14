@@ -43,6 +43,79 @@ const steps = [
   },
 ];
 
+function StepVisualGraphic({ active, city, step }: { active: number; city: string; step: typeof steps[0] }) {
+  return (
+    <div className="simpleVisualCard">
+      <div className="cardStepHeader">
+        <span className="cardStepBadge">Adım {String(active + 1).padStart(2, "0")} / 05</span>
+        <span className="cardStepMeta">{step.meta}</span>
+      </div>
+
+      <div className="cardStepMain">
+        <h3 className="cardStepTitle">{step.title}</h3>
+        <p className="cardStepSubtitle">{step.short}</p>
+      </div>
+
+      <div className="cardStepFeature">
+        {active === 0 && (
+          <div className="cefrBar">
+            <span className="cefrLabel">CEFR Seviyeleri:</span>
+            <div className="cefrLevels">
+              <span className="cLevel active">A1</span>
+              <span className="cLevel active">A2</span>
+              <span className="cLevel active">B1</span>
+              <span className="cLevel">B2</span>
+              <span className="cLevel">C1</span>
+              <span className="cLevel">C2</span>
+            </div>
+          </div>
+        )}
+
+        {active === 1 && (
+          <div className="courseTagsRow">
+            <span>Genel İngilizce</span>
+            <span>İş İngilizcesi</span>
+            <span>IELTS / TOEFL</span>
+            <span>Speaking Club</span>
+          </div>
+        )}
+
+        {active === 2 && (
+          <div className="schedulePillsRow">
+            <span>📅 Hafta İçi Akşam</span>
+            <span>☀️ Hafta Sonu Gündüz</span>
+            <span>🔄 Esnek Telafi Dersi</span>
+          </div>
+        )}
+
+        {active === 3 && (
+          <div className="guaranteeList">
+            <span>✓ {city} Kontenjanı Rezerve Edildi</span>
+            <span>✓ Dijital Kütüphane & Mobil Uygulama</span>
+            <span>✓ Şeffaf İade Koşulları</span>
+          </div>
+        )}
+
+        {active === 4 && (
+          <div className="firstLessonCard">
+            <span className="firstLessonIcon">👩‍🏫</span>
+            <div>
+              <strong>Teacher ile İlk Canlı Konuşma</strong>
+              <small>İlk günden itibaren özgüvenle konuşmaya başlayın</small>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="cardStepFooter">
+        <p className="cardStepTip">
+          <strong>{city} Öğrencileri İçin:</strong> {step.body}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function EnrollmentProcessSection({ city }: { city: string }) {
   const cityObj = useMemo(() => getCity(city), [city]);
   const [active, setActive] = useState(0);
@@ -60,26 +133,35 @@ export function EnrollmentProcessSection({ city }: { city: string }) {
 
       <div className="enrollmentExperience">
         <div className="processVisual" aria-label={`Kayıt süreci: ${active + 1}. adım`}>
-          <div className="processOrbit orbitOne" />
-          <div className="processOrbit orbitTwo" />
-          <div className="processCenter">
-            <span>{String(active + 1).padStart(2, "0")}</span>
-            <strong>{step.title}</strong>
-            <small>{step.short}</small>
+          <div className="processVisualHeader">
+            <div className="cityBadge">
+              <span className="livePulse" />
+              <span>{cityObj.name} Kayıt & Online Kabul</span>
+            </div>
+            <span className="speedBadge">24 Saatte İlk Ders</span>
           </div>
-          <div className="processTrack">
-            {steps.map((item, index) => (
-              <button
-                key={item.title}
-                className={index === active ? "active" : index < active ? "done" : ""}
-                onClick={() => setActive(index)}
-                aria-label={`${index + 1}. adım: ${item.title}`}
-              >
-                <span>{index < active ? "✓" : index + 1}</span>
-              </button>
-            ))}
+
+          <div className="processVisualBody">
+            <StepVisualGraphic active={active} city={cityObj.name} step={step} />
           </div>
-          <p>{active + 1} / {steps.length} · Ortalama kayıt süresi 1 iş günü</p>
+
+          <div className="processVisualFooter">
+            <div className="processTrack">
+              {steps.map((item, index) => (
+                <button
+                  key={item.title}
+                  className={index === active ? "active" : index < active ? "done" : ""}
+                  onClick={() => setActive(index)}
+                  aria-label={`${index + 1}. adım: ${item.title}`}
+                >
+                  <span>{index < active ? "✓" : index + 1}</span>
+                </button>
+              ))}
+            </div>
+            <p className="processFooterMeta">
+              <strong>{active + 1} / {steps.length}</strong> · {cityObj.name}&apos;de ortalama kayıt süresi 1 iş günü
+            </p>
+          </div>
         </div>
 
         <div className="processSteps">

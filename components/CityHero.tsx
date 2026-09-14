@@ -80,10 +80,10 @@ export function CityHero({ city }: { city: City }) {
 
         <div id="seviye-testi"><LeadForm city={city.name} /></div>
 
-        <div className="microProof">
+        <a href="#yorumlar" className="microProof" aria-label={`${city.name} öğrenci yorumlarını ve başarı hikayelerini inceleyin`}>
           <div className="avatars" aria-hidden="true"><i>EC</i><i>MK</i><i>SA</i></div>
-          <p><strong>Bu ay {city.name}&apos;de 318 öğrenci derse başladı.</strong> · Ücretsiz seviye tespit ve deneme dersinde yerini ayır.</p>
-        </div>
+          <p><strong>Bu ay {city.name}&apos;de 318 öğrenci derse başladı.</strong> · Ücretsiz seviye tespit ve deneme dersinde yerini ayır. ↗</p>
+        </a>
       </section>
 
       <section className="proofPanel" id="neden-biz" aria-label="Başarı ve güven göstergeleri">
