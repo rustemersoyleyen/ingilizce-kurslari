@@ -65,7 +65,61 @@ export const verifiedCourseTypes: CourseType[] = [
   },
 ];
 
-// TODO: Şehre özel kampanya/müfredat içerik uyarlaması eklenebilir.
-export function getCourseTypesForCity(citySlug?: string): CourseType[] {
-  return verifiedCourseTypes;
+export function getCourseTypesForCity(city?: string): CourseType[] {
+  const cityName = city || "Türkiye";
+  return [
+    {
+      code: "A1—C2",
+      title: "Genel İngilizce",
+      promise: `${cityName}'de günlük ve sosyal hayatta özgürce konuş`,
+      description: `${cityName}'de ezberci kalıplardan uzak, konuşma, dinleme ve telaffuz odaklı bire bir pratiklerle seviyenize uygun akıcı İngilizce eğitimi.`,
+      advantages: ["Avrupa Dil Portfolyosu ile tam uyumlu", "Her ders birebir konuşma pratiği", "Hafta içi ve hafta sonu esnek saatler"],
+      iconKind: "general",
+      questions: [
+        { question: "Hangi seviyeden başlamalıyım?", answer: "Ücretsiz seviye tespit sınavından sonra A1–C2 arasındaki doğru sınıfa yerleştirilirsin." },
+        { question: "Program ne kadar sürer?", answer: "Her kurun süresi ders yoğunluğuna göre değişir; danışmanın sana uygun takvimi birlikte planlar." },
+        { question: "Kaçırdığım dersleri telafi edebilir miyim?", answer: "Uygun sınıf ve saat bulunması halinde telafi planlaması yapılabilir." },
+      ],
+    },
+    {
+      code: "IELTS / TOEFL",
+      title: "Sınav Hazırlık",
+      promise: `${cityName} öğrencileri için stratejik sınav başarısı`,
+      description: `${cityName}'de akademik veya yurt dışı hedeflerinize uygun IELTS ve TOEFL sınav teknikleri, writing analizi ve bire bir speaking simülasyonları.`,
+      advantages: ["Gerçek sınav formatında deneme ve puan analizi", "Bireysel writing ve speaking geri bildirimi", "Kişiselleştirilmiş hedef odaklı çalışma planı"],
+      featured: true,
+      iconKind: "exam",
+      questions: [
+        { question: "Hangi sınava hazırlanmalıyım?", answer: "Hedef okul, kurum veya vize şartına göre IELTS ya da TOEFL seçimini danışmanınla netleştirebilirsin." },
+        { question: "Kaç puan artışı bekleyebilirim?", answer: "Sonuç başlangıç seviyene ve çalışma düzenine bağlıdır; ilk değerlendirmede gerçekçi bir hedef aralığı belirlenir." },
+        { question: "Bire bir ders seçeneği var mı?", answer: "Evet, grup programına ek veya bağımsız bire bir hazırlık planlanabilir." },
+      ],
+    },
+    {
+      code: "CAREER",
+      title: "İş İngilizcesi",
+      promise: `${cityName} iş dünyasında toplantı ve mülakatlara hazır ol`,
+      description: `${cityName}'deki profesyoneller için küresel iş dünyasında e-posta, müzakere, sunum ve mülakat senaryolarına odaklanan kariyer programı.`,
+      advantages: ["Sektöre özel terminoloji ve kelime çalışması", "Sunum, mülakat ve toplantı simülasyonları", "Uluslararası standartta yazışma pratiği"],
+      iconKind: "career",
+      questions: [
+        { question: "Program sektörüm için uyarlanabilir mi?", answer: "Evet. İçerik rolüne, sektörüne ve İngilizceyi kullandığın gerçek durumlara göre özelleştirilebilir." },
+        { question: "Şirket grupları için eğitim var mı?", answer: "Ekip seviyesi ve iş hedeflerine göre kurumsal grup programları hazırlanabilir." },
+        { question: "Dersler İngilizce mülakata yardımcı olur mu?", answer: "Mülakat soruları, güçlü cevap yapıları ve prova çalışmaları programa dahil edilebilir." },
+      ],
+    },
+    {
+      code: "LIVE ONLINE",
+      title: "Online İngilizce",
+      promise: `${cityName}'in neresinde olursan ol canlı derse katıl`,
+      description: `${cityName}'de trafik ve zaman kaybetmeden, evinizden veya ofisinizden anadili İngilizce uzman eğitmenlerle interaktif canlı konuşma dersleri.`,
+      advantages: ["Canlı, birebir ve etkileşimli konuşma seansları", "Yapay zeka destekli platform ve dijital kaynaklar", "Tamamen esnek gün ve saat seçimi"],
+      iconKind: "online",
+      questions: [
+        { question: "Online dersler canlı mı?", answer: "Evet. Dersler eğitmenle canlı yürütülür; soru sorabilir ve sınıf arkadaşlarınla pratik yapabilirsin." },
+        { question: "Hangi ekipmana ihtiyacım var?", answer: "İnternet bağlantısı, kamera ve mikrofonu olan bir bilgisayar ya da tablet yeterlidir." },
+        { question: "Yüz yüze programa geçebilir miyim?", answer: "Şube ve sınıf uygunluğuna göre program değişikliği danışmanınla planlanabilir." },
+      ],
+    },
+  ];
 }

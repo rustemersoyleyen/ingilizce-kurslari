@@ -35,7 +35,7 @@ export function FAQSection({ city }: { city: string }) {
                 aria-expanded={isOpen}
               >
                 <HeadingTag className="faqQuestionTitle">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span>{index + 1}</span>
                   {faq.question}
                 </HeadingTag>
                 <span className="faqIcon" aria-hidden="true">

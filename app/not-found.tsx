@@ -19,7 +19,7 @@ export default function NotFound() {
           textDecoration: "none",
         }}
       >
-        İstanbul İngilizce Kursu Sayfasına Dön ↗
+        İstanbul İngilizce Kursu Sayfasına Dön
       </Link>
     </main>
   );

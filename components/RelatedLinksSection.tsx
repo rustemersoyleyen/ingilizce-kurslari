@@ -41,12 +41,12 @@ export function RelatedLinksSection({ city }: { city: string }) {
       <div className="relatedGrid" id="related-panel" role="tabpanel" aria-labelledby={`related-tab-${selected}`}>
         {active.links.map((link, index) => (
           <Link href={link.href} key={link.title}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span>{index + 1}</span>
             <div>
               <strong>{link.title}</strong>
               <small>{link.detail}</small>
             </div>
-            <i>↗</i>
+            <i>→</i>
           </Link>
         ))}
       </div>

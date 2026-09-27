@@ -202,3 +202,42 @@ Tüm UI ve içerik değişiklikleri `DESIGN_SYSTEM.md` ile uyumlu olmalıdır.
 - Sayfadaki tüm ana içerik bölümleri (`.coursesSection`, `.reviewsSection`, `.districtSection`, `.teachersSection`, `.cefrSection`, `.enrollmentSection`, `.pricingSection`, `.faqSection`, `.relatedSection`) standart olarak `padding: 56px 0 36px;` dikey boşluk ritmine uymalıdır.
 - Bölümler arasında görsel ritim ve dikey denge tutarlı olmalıdır.
 
+## 23. Numaralandırma Standardı: `01` Yerine `1`
+- Tüm sayfalarda, başlıklarda, adımlarda, kartlarda ve rozetlerde `01`, `02`, `03` gibi başına sıfır eklenen iki haneli numaralandırmalar kullanılmamalıdır.
+- Her zaman doğrudan tek haneli sade format (`1`, `2`, `3`...) kullanılmalıdır.
+
+## 24. Çapraz Okların (↗) Kaldırılması
+- Buton, link veya kartlardaki `↗` (yukarı-sağ çapraz ok) karakteri AI şablonu hissi verdiği için kesinlikle kullanılmamalıdır. Temiz, sade ve kurumsal tipografi tercih edilmelidir.
+
+## 25. Kart ve Liste Hover/Seçim Arka Planı (Mavi Ton Standardı)
+- İlçe kartları, liste kartları ve etkileşimli alanlarda standart gri (`#f3f4f6` vb.) hover/seçim zeminleri AI şablonu hissi verdiği için kullanılmamalıdır.
+- Tüm sayfalarda marka kimliğiyle uyumlu ferah açık mavi tonlar (`#f0f7ff` veya `#e0f2fe`) kullanılmalıdır.
+
+## 26. Hero & Lead Form Mobil Above-The-Fold Kuralları
+- Mobilde sayfa açıldığında formun CTA butonu ("Sana Özel Eğitim Planını Hemen Başlat" / "Seviyeni Belirle") kaydırma (scroll) yapmadan ekranda (100dvh içinde) görünür olmalıdır.
+- Hero rozeti (badge) gerekirse formun altına veya başlık altına konumlandırılmalı, açıklama paragrafı mobilde kompakt tutulmalı (gerekirse 'Daha fazla oku / Read More' mekanizması eklenmeli).
+- Hero form başlığı dikkat çekici ve tok bir fontla vurgulanmalı ancak mobilde **asla tek satırı aşmayacak** şekilde responsive font (`clamp`) ile sınırlandırılmalıdır.
+
+## 27. Sosyal Kanıt & İstatistik (Proof) Paneli Standartları
+- Tooltip/visualize alanları ferah boşluklarla ayrılmalı, kenarlara yapışık görünüm engellenmelidir. Panel dikeyde gereksiz yer kaplamayacak şekilde kompakt olmalıdır.
+- 4 Avantaj maddesi ("MEB onaylı program", "Uluslararası sertifika", "4,9 / 5 öğrenci puanı", "İlk 14 gün iade garantisi"): Tek satırda kaydırılabilir (slider / horizontal scroll) veya kompakt 2x2 grid düzeninde sunulmalıdır.
+- **Her bir avantaj için farklı ve anlamına uygun ikonlar** kullanılmalıdır (MEB için resmi belge/diploma, sertifika için rozet, puan için yıldız, iade için güvence kalkanı). Hepsi aynı kalkan ikonu olamaz.
+- İstatistik ve avantaj kartlarında hover/tooltip visualize metinleri `[İl Adı] + [Anlamına Uygun İfade] + İngilizce Kursu` formülünde dinamik olmalıdır.
+
+## 28. Kurs Türleri Şehir Bazlı Metin & Visualize Kuralları
+- Kurs türü kartlarındaki açıklama metinleri içerisine doğal akışla `[İl Adı]` enjekte edilmeli, her il için ana özü koruyan farklı cümle varyasyonları kullanılmalıdır.
+- Kurs türü ikonları ve seviye rozetleri (A1-C2 vb.) üzerine gelindiğinde `[İl Adı] + [Kurs Türü] İngilizce Kursu` formülüyle visualize/hover metni sunulmalıdır.
+- SVG veya HTML `title`/`aria-label` etiketlerinde **asla "Simgesi" ifadesi kullanılmamalıdır** (örn: "Konuşma simgesi" yerine doğrudan "Genel İngilizce Pratiği").
+
+## 29. "Karar Veremedin mi?" ve Fiyat Vurgu Standartları
+- "Karar veremedin mi?" kutusu dikkat çekici kurumsal renkle (örneğin canlı turuncu `#F16C00`) vurgulanmalı; içerideki buton daha büyük font, belirgin highlight ve güçlü görsel hiyerarşiyle öne çıkarılmalıdır.
+- Fiyatlar bölümünde mobilde fiyat ve hemen altındaki "Satın Al / Hemen Başla" butonu ekran kaydırılmadan tek bakışta görünür olmalıdır.
+- Büyük fiyat yazısı (`₺4.900`) dikkat çekici olmalı, turuncu/kırmızı canlı highlight ile vurgulanmalıdır.
+
+## 30. Mobil Slider ve Akordiyon Deneyimi
+- **İlçeler (DistrictSection):** Üstteki ilçe sekmeleri mobilde otomatik/dokunmatik kaydırılabilir olmalı ve aktif ilçe seçildiğinde ortalanmalıdır (`scrollIntoView({ inline: 'center' })`). "Ücretsiz seviyeni belirle" ve "[İlçe] İngilizce Kursu" butonları tam simetrik olmalıdır. "Avantajlar" ve "Kimler için uygun" alanları mobilde aynı ekranda (kompakt) yer almalıdır.
+- **Eğitmenler (TeachersSection):** Eğitmen fotoğraflarında yüzler net ve belirgin olmalı (uygun kadraj/oran). Mobilde her eğitmen için net bir visualize/bilgi alanı ("Teacher Louis is from Atlanta...", uzmanlık, ilgi alanları) sunulmalıdır.
+- **CEFR Seviyeleri (CefrSection):** Mobilde seviyeler slider yapısında gezilebilir olmalı, kazanımlar ve ders içerikleri rahatça okunabilmelidir.
+- **Kayıt Süreci (EnrollmentSection):** Mobilde üstteki görsel alan oklu (Arrow) bir slider, açıklamalar ise akordiyon yapısıyla birebir senkronize çalışmalıdır (aktif slayt hangisi ise görseli ve içeriği eşleşmelidir).
+- **Görsel Alt/Title Standardı:** Tüm `<img>` ve `<svg>` etiketlerinde `title` ve `alt` nitelikleri `[İl Adı] + [Bağlam/Konu] + İngilizce Kursu` formülüne uygun olmalıdır.
+

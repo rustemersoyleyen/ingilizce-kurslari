@@ -4,8 +4,8 @@ function CourseIcon({ kind, city, courseTitle }: { kind?: string; city: string; 
   const safeId = `${city.toLowerCase().replace(/[^a-z0-9]/g, "")}-${kind || "course"}`;
   const titleId = `icon-title-${safeId}`;
   const descId = `icon-desc-${safeId}`;
-  const titleText = `${city} ${courseTitle} Kursu Simgesi`;
-  const descText = `${city} için konuşma odaklı birebir ${courseTitle} eğitim programı simgesi`;
+  const titleText = `${city} ${courseTitle} İngilizce Kursu`;
+  const descText = `${city} için konuşma odaklı ${courseTitle} İngilizce eğitim programı`;
 
   switch (kind) {
     case "general":
@@ -58,51 +58,75 @@ export function CourseTypesSection({ city }: { city: string }) {
         <p className="sectionKicker">Hedefine göre doğru rota</p>
         <h2 id="courses-title">{city} İngilizce Kursu Türleri</h2>
         <p>
-          İngilizceyi neden öğrenmek istediğini söyle; seviyene, zamanına ve hedeflerine uygun programı birlikte seçelim. Kur detayları için <a href="#seviyeler" className="contextualLink">İngilizce seviyelerini inceleyin ↗</a>.
+          İngilizceyi neden öğrenmek istediğini söyle; seviyene, zamanına ve hedeflerine uygun programı birlikte seçelim. Kur detayları için <a href="#seviyeler" className="contextualLink">İngilizce seviyelerini inceleyin</a>.
         </p>
       </header>
 
       <ul className="courseGrid">
-        {courseTypes.map((course, index) => (
-          <li className={`courseCard${course.featured ? " featured" : ""}`} id={`program-${index + 1}`} key={course.title}>
-            <div className="courseTopline">
-              <h3 title={`${index + 1}. ${course.title}`}>{index + 1}. {course.title}</h3>
-              <div className="courseBadges">
-                <div className="courseIconWrapper">
-                  <CourseIcon kind={course.iconKind} city={city} courseTitle={course.title} />
+        {courseTypes.map((course, index) => {
+          const visualizeText = `${city} ${course.title} İngilizce Kursu (${course.code})`;
+          return (
+            <li className={`courseCard${course.featured ? " featured" : ""}`} id={`program-${index + 1}`} key={course.title}>
+              <div className="courseTopline">
+                <h3 title={`${index + 1}. ${course.title}`}>{index + 1}. {course.title}</h3>
+                <div className="courseBadges" aria-label={visualizeText}>
+                  <div
+                    className="courseIconWrapper"
+                    tabIndex={0}
+                    title={`${city} ${course.title} İngilizce Kursu`}
+                    aria-label={`${city} ${course.title} İngilizce Kursu`}
+                  >
+                    <CourseIcon kind={course.iconKind} city={city} courseTitle={course.title} />
+                    <span className="badgeVisualizeTooltip" role="tooltip">
+                      {city} {course.title} İngilizce Kursu
+                    </span>
+                  </div>
+                  <strong
+                    tabIndex={0}
+                    title={`${city} ${course.title} Seviye Rozeti: ${course.code}`}
+                    aria-label={`${city} ${course.title} Seviye Rozeti: ${course.code}`}
+                  >
+                    {course.code}
+                    <span className="badgeVisualizeTooltip" role="tooltip">
+                      {city} {course.title} Seviyesi ({course.code})
+                    </span>
+                  </strong>
                 </div>
-                <strong>{course.code}</strong>
               </div>
-            </div>
-            <p className="coursePromise">{course.promise}</p>
-            <p className="courseDescription">{course.description}</p>
+              <p className="coursePromise">{course.promise}</p>
+              <p className="courseDescription">{course.description}</p>
 
-            <ul className="courseAdvantages">
-              {course.advantages.map((advantage) => <li key={advantage}><span>✓</span>{advantage}</li>)}
-            </ul>
+              <ul className="courseAdvantages">
+                {course.advantages.map((advantage) => <li key={advantage}><span>✓</span>{advantage}</li>)}
+              </ul>
 
-            <div className="courseActions">
-              <a className="coursePrimary" href="#seviye-testi">Seviyeni belirle <span>↗</span></a>
-              <a className="courseLink" href="#egitmenler">Eğitmenleri gör</a>
-            </div>
+              <div className="courseActions">
+                <a className="coursePrimary" href="#seviye-testi">Seviyeni belirle</a>
+                <a className="courseLink" href="#egitmenler">Eğitmenleri gör</a>
+              </div>
 
-            <div className="courseQuestions">
-              {course.questions.map((item) => (
-                <details key={item.question}>
-                  <summary>{item.question}<span aria-hidden="true">+</span></summary>
-                  <p>{item.answer}</p>
-                </details>
-              ))}
-            </div>
-          </li>
-        ))}
+              <div className="courseQuestions">
+                {course.questions.map((item) => (
+                  <details key={item.question}>
+                    <summary>{item.question}<span aria-hidden="true">+</span></summary>
+                    <p>{item.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </li>
+          );
+        })}
       </ul>
 
       <aside className="courseHelp">
-        <div><span className="helpPulse" />Karar veremedin mi?</div>
+        <div className="helpHeading"><span className="helpPulse" />Karar veremedin mi?</div>
         <p>Hedefini ve haftalık programını anlat; eğitim danışmanın sana en uygun rotayı ücretsiz oluştursun.</p>
-        <a href="#seviye-testi">Programımı birlikte seçelim <span>→</span></a>
+        <a className="helpCtaButton" href="#seviye-testi">
+          <span>Programımı Birlikte Seçelim</span>
+          <span className="ctaArrow" aria-hidden="true">→</span>
+        </a>
       </aside>
     </section>
   );
 }
+

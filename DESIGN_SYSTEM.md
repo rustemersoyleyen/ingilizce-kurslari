@@ -318,31 +318,62 @@ Kurallar:
  - Form inputları label ile eşleşmelidir.
  - Renk tek başına anlam taşıyıcı olmamalıdır; açık arka planda düşük kontrastlı açık gri/mavi yazılardan kaçının.
  - Focus stilleri görünür olmalıdır; fakat resmi focus rengi kaynakta doğrulanmadı: `TBD`.
- - Türkçe sayfalarda `lang="tr"` korunmalıdır.
- 
- ## 20. Do / Don't Rules
- 
- Do:
- 
- - Quicksand kullan (gövde metinlerinde font weight `400`).
- - `#309DFF`, `#F16C00`, `#333333`, `#FFFFFF`, `#F5F5F5`, `#C5C5C5` değerlerini doğrulanmış token olarak kullan.
- - Okunabilirlik için açık zeminlerde WCAG uyumlu koyu metin renkleri (`#1f2937`, `#374151`) ve yüksek kontrast mavi (`#0b5fc9`) tercih et.
- - CTA'ları ücretsiz deneme, seviye tespit veya öğrenme planı etrafında kur.
- - Formu ve CTA'yı masaüstünde ilk bakışta (above the fold) görünür kıl.
- - Sosyal kanıt (proof panel) istatistiklerini 4 sütunlu ve aydınlık tooltip ile sun.
- - Outline ve tek renk ikon kullan.
- - Logo assetlerini resmi yapısıyla koru.
- - Belirsiz değerleri `TBD` olarak bırak.
- 
- Don't:
- 
- - Yeni, bağımsız marka paleti oluşturma.
- - Logo oranını, rengini veya yapısını değiştirme.
- - Açık zemin üstünde okunması zor soluk gri veya düşük kontrastlı açık mavi metinler kullanma.
- - Kurs kartlarında gereksiz çift numaralandırma yapma.
- - Yorum kartlarında gereksiz `<h3>` kullanma (`<blockquote>` ve `<cite>` kullan).
- - Kaynakta olmayan shadow, radius veya breakpoint değerlerini kesin standart gibi yazma.
- - Formu gerçek veri topluyor gibi gösterip backend/KVKK akışını boş bırakma.
- - Türkçe karakterleri bozacak encoding değişikliği yapma.
- - Mevcut deployment dosyalarını tasarım değişikliği bahanesiyle değiştirme.
+  - Türkçe sayfalarda `lang="tr"` korunmalıdır.
+
+## 20. Do / Don't Rules
+
+Do:
+
+- Quicksand kullan (gövde metinlerinde font weight `400`).
+- `#309DFF`, `#F16C00`, `#333333`, `#FFFFFF`, `#F5F5F5`, `#C5C5C5` değerlerini doğrulanmış token olarak kullan.
+- Okunabilirlik için açık zeminlerde WCAG uyumlu koyu metin renkleri (`#1f2937`, `#374151`) ve yüksek kontrast mavi (`#0b5fc9`) tercih et.
+- CTA'ları ücretsiz deneme, seviye tespit veya öğrenme planı etrafında kur.
+- Formu ve CTA'yı masaüstünde ve mobilde ilk bakışta (above the fold) kaydırma yapmadan görünür kıl.
+- Sosyal kanıt (proof panel) istatistiklerini 4 sütunlu ve aydınlık tooltip ile sun.
+- Kart ve hover etkileşimlerinde standart gri yerine marka uyumlu açık mavi tonlar (`#f0f7ff`) kullan.
+- Numaralandırmalarda tek haneli (`1`, `2`, `3`) format kullan.
+- İkonlarda her maddeye özel, anlamına uygun farklı SVG ikonlar tercih et.
+- Outline ve tek renk ikon kullan.
+- Logo assetlerini resmi yapısıyla koru.
+- Belirsiz değerleri `TBD` olarak bırak.
+
+Don't:
+
+- Yeni, bağımsız marka paleti oluşturma.
+- Logo oranını, rengini veya yapısını değiştirme.
+- Kart üzerine gelindiğinde AI şablonu izlenimi veren standart gri hover arka planı kullanma.
+- Numaralandırmada `01`, `02`, `03` gibi başına sıfır ekleme.
+- Buton ve link sonlarına AI şablonu hissi veren `↗` çapraz yukarı ok simgesi koyma.
+- İkon ve SVG `title`/`aria-label` etiketlerinde "Simgesi" ifadesi kullanma.
+- Açık zemin üstünde okunması zor soluk gri veya düşük kontrastlı açık mavi metinler kullanma.
+- Kurs kartlarında gereksiz çift numaralandırma yapma.
+- Yorum kartlarında gereksiz `<h3>` kullanma (`<blockquote>` ve `<cite>` kullan).
+- Kaynakta olmayan shadow, radius veya breakpoint değerlerini kesin standart gibi yazma.
+- Formu gerçek veri topluyor gibi gösterip backend/KVKK akışını boş bırakma.
+- Türkçe karakterleri bozacak encoding değişikliği yapma.
+- Mevcut deployment dosyalarını tasarım değişikliği bahanesiyle değiştirme.
+
+## 21. Mobil & Responsive Görünürlük Standartları
+
+- **Hero & Form:** Mobilde sayfa açıldığında formun CTA butonu (`100dvh` içinde) scroll etmeden görünür olmalıdır. Form başlığı güçlü ve dikkat çekici olmalı, responsive `clamp` ile mobilde asla tek satırı aşmamalıdır.
+- **Fiyatlandırma (Pricing):** Fiyat kartı göründüğünde "Satın Al / Hemen Başla" CTA butonu mobilde aynı ekranda kaydırma yapmadan görünür olmalıdır.
+- **Bölüm Dikey Ritim:** Bölüm boşlukları (`56px 0 36px`) korunarak ekranlar arası akış kesintisiz tutulmalıdır.
+
+## 22. Kart, Liste ve Etkileşim Standartları
+
+- **Hover & Seçim Zeminleri:** İlçe, kurs veya liste kartlarında standart gri (`#f3f4f6`) hover zeminleri kesinlikle kullanılmaz; açık kurumsal mavi (`#f0f7ff` / `#e0f2fe`) kullanılır.
+- **Buton Simetrisi:** İkili buton gruplarında (Örn: İlçeler bölümündeki iki buton) yükseklik, padding ve hizalama tam simetrik olmalıdır.
+- **İlçe Sekmeleri:** Mobilde aktif sekme daima ortalanmalı (`scrollIntoView({ inline: 'center' })`), avantajlar ve uygunluk alanları aynı ekranda kompakt sunulmalıdır.
+
+## 23. İkon, Görsel ve Semantik Metin Kuralları
+
+- **Farklı İkonlar:** Sosyal kanıt (proof panel) avantajlarında hepsi aynı kalkan ikonu olamaz; MEB için resmi belge, sertifika için rozet, puan için yıldız, iade için güvence kalkanı gibi amaca özel SVG'ler kullanılır.
+- **Kadraj & Yüz Oranı:** Eğitmen fotoğraflarında yüzler ekranda net ve orantılı görünmeli, dar kadrajla boğulmamalıdır.
+- **Visualize & Alt Formülü:** Görseller, SVG'ler ve kurs türleri için hover/visualize metinleri `[İl Adı] + [Bağlam/Kurs Türü] + İngilizce Kursu` formülünde dinamik olmalıdır. "Simgesi" kelimesi etiketlerde yasaktır.
+
+## 24. Dikkat Çekici Vurgu ve Highlight Standartları
+
+- "Karar veremedin mi?" kutusu dikkat çekici marka turuncusu (`#F16C00`) veya yüksek kontrastlı zemin ile öne çıkarılmalı, butonu büyük font ve belirgin highlight ile desteklenmelidir.
+- Büyük fiyat gösterimlerinde (`₺4.900`) dikkat çekici turuncu/kırmızı canlı highlight vurgusu kullanılmalıdır.
+
 

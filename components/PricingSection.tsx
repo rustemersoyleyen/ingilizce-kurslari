@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getCity } from "@/lib/cities";
 import { getPricingComparison } from "@/lib/pricingComparison";
 
@@ -16,10 +16,49 @@ export function PricingSection({ city }: { city: string }) {
   const cityObj = useMemo(() => getCity(city), [city]);
   const comparisonList = useMemo(() => getPricingComparison(city), [city]);
   const [selected, setSelected] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const offer = offers[selected];
 
+  function handleSelect(index: number) {
+    setSelected(index);
+    const tabEl = tabRefs.current[index];
+    if (tabEl) {
+      tabEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+  }
+
+  function handlePrev() {
+    const prev = selected > 0 ? selected - 1 : offers.length - 1;
+    handleSelect(prev);
+  }
+
+  function handleNext() {
+    const next = selected < offers.length - 1 ? selected + 1 : 0;
+    handleSelect(next);
+  }
+
+  useEffect(() => {
+    if (isPaused || offers.length <= 1) return;
+    const timer = setInterval(() => {
+      setSelected((prev) => {
+        const next = (prev + 1) % offers.length;
+        tabRefs.current[next]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        return next;
+      });
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   return (
-    <section className="pricingSection" id="fiyatlar" aria-labelledby="pricing-title">
+    <section
+      className="pricingSection"
+      id="fiyatlar"
+      aria-labelledby="pricing-title"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+    >
       <header className="pricingHeader">
         <p className="sectionKicker">Şeffaf program bilgisi</p>
         <h2 id="pricing-title">{cityObj.name} İngilizce Kursu Fiyatları</h2>
@@ -28,22 +67,41 @@ export function PricingSection({ city }: { city: string }) {
         </p>
       </header>
 
-      <div className="priceTabs" role="tablist" aria-label="Fiyatı görüntülenecek programı seçin">
-        {offers.map((item, index) => (
-          <button
-            role="tab"
-            id={`price-tab-${index}`}
-            aria-controls="price-panel"
-            aria-selected={selected === index}
-            key={item.name}
-            className={selected === index ? "active" : ""}
-            onClick={() => setSelected(index)}
-          >
-            <strong>{item.name}</strong>
-            <span>{item.price}</span>
-            <small>{item.duration} · {item.capacity}</small>
-          </button>
-        ))}
+      <div className="priceSliderWrapper">
+        <button
+          type="button"
+          className="sliderArrowBtn prev"
+          onClick={handlePrev}
+          aria-label="Önceki program fiyatı"
+        >
+          ‹
+        </button>
+        <div className="priceTabs" role="tablist" aria-label="Fiyatı görüntülenecek programı seçin">
+          {offers.map((item, index) => (
+            <button
+              ref={(el) => { tabRefs.current[index] = el; }}
+              role="tab"
+              id={`price-tab-${index}`}
+              aria-controls="price-panel"
+              aria-selected={selected === index}
+              key={item.name}
+              className={selected === index ? "active" : ""}
+              onClick={() => handleSelect(index)}
+            >
+              <strong>{item.name}</strong>
+              <span>{item.price}</span>
+              <small>{item.duration} · {item.capacity}</small>
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="sliderArrowBtn next"
+          onClick={handleNext}
+          aria-label="Sonraki program fiyatı"
+        >
+          ›
+        </button>
       </div>
 
       <div className="priceSpotlight" id="price-panel" role="tabpanel" aria-labelledby={`price-tab-${selected}`}>
@@ -54,14 +112,17 @@ export function PricingSection({ city }: { city: string }) {
           <small><i>✓</i>{offer.note}</small>
         </div>
         <div className="priceNumber">
-          <span>Başlangıç fiyatı</span>
-          <strong>{offer.price}</strong>
-          <small>{offer.period}</small>
+          <span className="priceLabel">Başlangıç fiyatı</span>
+          <strong className="bigPriceHighlight">{offer.price}</strong>
+          <small className="pricePeriodTag">{offer.period}</small>
+          <a className="priceDirectCta" href="#seviye-testi">
+            <span>Hemen Başla &amp; Teklif Al</span>
+          </a>
         </div>
         <div className="priceSummary">
           <div><span>Program süresi</span><strong>{offer.duration}</strong></div>
           <div><span>Sınıf kontenjanı</span><strong>{offer.capacity}</strong></div>
-          <a href="#seviye-testi">Kişisel teklif alın <span>↗</span></a>
+          <a className="priceDetailsCta" href="#seviye-testi">Kişisel teklif alın</a>
         </div>
       </div>
 
@@ -110,7 +171,7 @@ export function PricingSection({ city }: { city: string }) {
             Fiziksel şube kurs fiyatları kurum, lokasyon ve ders saatine göre değişiklik gösterebilir. Size en uygun online veya yüz yüze eğitim seçeneği için ücretsiz seviye tespiti başlatın.
           </p>
           <a className="comparisonCta" href="#seviye-testi">
-            Ücretsiz seviyeni belirle <span>↗</span>
+            Ücretsiz seviyeni belirle
           </a>
         </div>
       </div>

@@ -36,18 +36,38 @@ function TeacherCard({ teacher, index, cityName, districtName }: { teacher: Teac
     .map((interest) => interestContextMap[interest] || interest.toLocaleLowerCase("tr-TR"))
     .join(" ve ");
 
+  const teacherVisualTitle = `${cityName} İngilizce Kursu Uzman Eğitmeni Teacher ${teacher.name} (${teacher.from}) - ${teacher.degree}`;
+
   return (
-    <article className="teacherCard" itemScope itemType="https://schema.org/Person" style={{ "--teacher-accent": accent } as React.CSSProperties}>
+    <article
+      className="teacherCard"
+      itemScope
+      itemType="https://schema.org/Person"
+      style={{ "--teacher-accent": accent } as React.CSSProperties}
+      title={teacherVisualTitle}
+      aria-label={teacherVisualTitle}
+      tabIndex={0}
+    >
+      <div className="teacherFullCardVisualize" role="tooltip">
+        <div className="teacherVisualizeHeader">
+          <span className="teacherVisualizePulse" aria-hidden="true" />
+          <strong>{cityName} İngilizce Kursu Eğitmen Dosyası</strong>
+        </div>
+        <p>
+          Teacher {teacher.name} ({teacher.from}) · {teacher.degree} mezunu olup {primaryInterests.join(" ve ")} konularında konuşma pratiği sunar.
+        </p>
+      </div>
       <div className="teacherPhoto">
         {!imageFailed ? (
           <img
             src={`https://e-teacher.org/users.profile/${teacher.id}.jpg`}
-            alt={`İngilizce eğitmeni ${teacher.name}`}
+            alt={`${cityName} İngilizce Kursu Eğitmeni Teacher ${teacher.name}`}
+            title={`${cityName} İngilizce Kursu Eğitmeni Teacher ${teacher.name} - ${teacher.from}`}
             onError={() => setImageFailed(true)}
             itemProp="image"
             loading="lazy"
-            width={120}
-            height={120}
+            width={280}
+            height={260}
           />
         ) : (
           <span aria-hidden="true">{teacher.name.slice(0, 2).toUpperCase()}</span>
@@ -55,11 +75,18 @@ function TeacherCard({ teacher, index, cityName, districtName }: { teacher: Teac
         <span className="teacherStatus"><i /> Ders veriyor</span>
       </div>
       <div className="teacherBody">
-        <p className="teacherIndex">Eğitmen dosyası · {String(index + 1).padStart(2, "0")}</p>
+        <div className="teacherTopInfo">
+          <p className="teacherIndex">Eğitmen Dosyası · {index + 1}</p>
+          <div className="teacherVisualizeBadge" title={teacherVisualTitle} aria-label={teacherVisualTitle}>
+            <span>{cityName} · {teacher.from}</span>
+          </div>
+        </div>
+
         <h3 itemProp="name">Teacher {teacher.name}</h3>
-        <p className="teacherOrigin">{teacher.from}</p>
+        <p className="teacherOrigin"><strong>Memleket:</strong> {teacher.from}</p>
         <p className="teacherDegree" itemProp="alumniOf"><strong>{teacher.degree}</strong><br />{teacher.university}</p>
         <p className="teacherBio" itemProp="description">{teacher.bio}</p>
+        
         <ul className="teacherTags" aria-label="Öğretim tarzları">
           {teacher.styles.map((style) => <li key={style}>{style}</li>)}
         </ul>
@@ -88,7 +115,7 @@ function TeacherCard({ teacher, index, cityName, districtName }: { teacher: Teac
         {/* Doğal Sözel Bağlantı / Verbalization Kutu */}
         <div className="teacherPracticeNote">
           <span>💬 Konuşma Odaklı Ders:</span>
-          Teacher {teacher.name} ile <strong>{contextPhrases}</strong> hakkında {cityName}&apos;de bire bir İngilizce konuşma pratiği yapın.
+          Teacher {teacher.name} ({teacher.from}) ile <strong>{contextPhrases}</strong> hakkında {cityName}&apos;de bire bir İngilizce konuşma pratiği yapın.
         </div>
       </div>
     </article>
@@ -120,7 +147,7 @@ export function TeachersSection({ city }: { city: string }) {
           <h2 id="teachers-title">{cityObj.name} İngilizce Kursu Eğitmenleri</h2>
         </div>
         <p>
-          {cityObj.locative} akıcı İngilizce konuşma pratiği yapmak isteyen öğrencilerimiz için anadili İngilizce olan uzman eğitmen kadromuzu inceleyin. Her eğitmen konuşma pratiğini kendi uzmanlığıyla birleştirir. Program detayları için <a href="#programlar" className="contextualLink">kurs türlerini inceleyin ↗</a>.
+          {cityObj.locative} akıcı İngilizce konuşma pratiği yapmak isteyen öğrencilerimiz için anadili İngilizce olan uzman eğitmen kadromuzu inceleyin. Her eğitmen konuşma pratiğini kendi uzmanlığıyla birleştirir. Program detayları için <a href="#programlar" className="contextualLink">kurs türlerini inceleyin</a>.
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getCity } from "@/lib/cities";
 
 // TODO: Şehre özel fiziksel şube kayıt ve oryantasyon illüstrasyon/görselleri e-teacher backend asset servisine bağlandığında güncellenecek.
@@ -47,7 +47,7 @@ function StepVisualGraphic({ active, city, step }: { active: number; city: strin
   return (
     <div className="simpleVisualCard">
       <div className="cardStepHeader">
-        <span className="cardStepBadge">Adım {String(active + 1).padStart(2, "0")} / 05</span>
+        <span className="cardStepBadge">Adım {active + 1} / 5</span>
         <span className="cardStepMeta">{step.meta}</span>
       </div>
 
@@ -119,10 +119,34 @@ function StepVisualGraphic({ active, city, step }: { active: number; city: strin
 export function EnrollmentProcessSection({ city }: { city: string }) {
   const cityObj = useMemo(() => getCity(city), [city]);
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const step = steps[active];
 
+  function handlePrev() {
+    setActive((prev) => (prev > 0 ? prev - 1 : steps.length - 1));
+  }
+
+  function handleNext() {
+    setActive((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
+  }
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setActive((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   return (
-    <section className="enrollmentSection" id="kayit-sureci" aria-labelledby="enrollment-title">
+    <section
+      className="enrollmentSection"
+      id="kayit-sureci"
+      aria-labelledby="enrollment-title"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+    >
       <header className="enrollmentHeader">
         <p className="sectionKicker">Beş adımda sınıfa katılın</p>
         <h2 id="enrollment-title">{cityObj.name} İngilizce Kursu Kayıt Süreci</h2>
@@ -141,8 +165,12 @@ export function EnrollmentProcessSection({ city }: { city: string }) {
             <span className="speedBadge">24 Saatte İlk Ders</span>
           </div>
 
-          <div className="processVisualBody">
-            <StepVisualGraphic active={active} city={cityObj.name} step={step} />
+          <div className="processSliderRow">
+            <button type="button" className="processArrowBtn prev" onClick={handlePrev} aria-label="Önceki Adım">‹</button>
+            <div className="processVisualBody">
+              <StepVisualGraphic active={active} city={cityObj.name} step={step} />
+            </div>
+            <button type="button" className="processArrowBtn next" onClick={handleNext} aria-label="Sonraki Adım">›</button>
           </div>
 
           <div className="processVisualFooter">
@@ -164,11 +192,11 @@ export function EnrollmentProcessSection({ city }: { city: string }) {
           </div>
         </div>
 
-        <div className="processSteps">
+        <div className="processSteps" aria-label="Kayıt adımları açıklamaları">
           {steps.map((item, index) => (
             <article className={active === index ? "active" : ""} key={item.title}>
               <button onClick={() => setActive(index)} aria-expanded={active === index}>
-                <span>Adım {String(index + 1).padStart(2, "0")}</span>
+                <span>Adım {index + 1}</span>
                 <strong>{item.title}</strong>
                 <i>{active === index ? "−" : "+"}</i>
               </button>
@@ -181,7 +209,6 @@ export function EnrollmentProcessSection({ city }: { city: string }) {
                   </small>
                   <a href={index === 1 ? "#seviyeler" : index === 2 ? "#ilceler" : "#seviye-testi"}>
                     {item.action}
-                    <span>↗</span>
                   </a>
                 </div>
               )}

@@ -211,8 +211,8 @@ export function ReviewsPlatformSection({ city }: { city: string }) {
                   />
                   <i>{String(9 + index).padStart(2, "0")}:24</i>
                 </div>
-                <p>{screen.label}</p>
-                <h3>{screen.title}</h3>
+                <p className="screenLabel">{screen.label}</p>
+                <p className="screenTitle">{screen.title}</p>
                 <div className={`screenVisual ${screen.kind}`}>
                   {screen.kind === "progress" && (
                     <>

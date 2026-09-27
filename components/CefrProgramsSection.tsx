@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const programs = [
   {
@@ -47,22 +47,50 @@ const programs = [
 
 export function CefrProgramsSection() {
   const [selected, setSelected] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const program = programs[selected];
 
+  function handlePrev() {
+    setSelected((prev) => (prev > 0 ? prev - 1 : programs.length - 1));
+  }
+
+  function handleNext() {
+    setSelected((prev) => (prev < programs.length - 1 ? prev + 1 : 0));
+  }
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setSelected((prev) => (prev < programs.length - 1 ? prev + 1 : 0));
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   return (
-    <section className="cefrSection" id="seviyeler" aria-labelledby="cefr-title">
+    <section
+      className="cefrSection"
+      id="seviyeler"
+      aria-labelledby="cefr-title"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+    >
       <header className="cefrHeader">
         <p className="sectionKicker">Ortak Avrupa Dil Referans Çerçevesi</p>
         <h2 id="cefr-title">İngilizce Kur Programı <em>(CEFR Seviyeleri)</em></h2>
         <p>Başlangıçtan ileri seviyeye kadar her kur; ne öğrenmeniz gerektiğini, hangi becerileri kazanacağınızı ve bir sonraki aşamaya nasıl geçeceğinizi açıkça gösterir.</p>
       </header>
 
-      <div className="cefrFilters" aria-label="İngilizce seviyesini seçin">
-        {programs.map((item, index) => (
-          <button key={item.filter} className={selected === index ? "active" : ""} onClick={() => setSelected(index)} aria-pressed={selected === index}>
-            <span>{item.filter}</span><small>{item.label}</small>
-          </button>
-        ))}
+      <div className="cefrNavWrapper">
+        <button type="button" className="cefrNavArrow prev" onClick={handlePrev} aria-label="Önceki Seviye">‹</button>
+        <div className="cefrFilters" aria-label="İngilizce seviyesini seçin">
+          {programs.map((item, index) => (
+            <button key={item.filter} className={selected === index ? "active" : ""} onClick={() => setSelected(index)} aria-pressed={selected === index}>
+              <span>{item.filter}</span><small>{item.label}</small>
+            </button>
+          ))}
+        </div>
+        <button type="button" className="cefrNavArrow next" onClick={handleNext} aria-label="Sonraki Seviye">›</button>
       </div>
 
       <article className="cefrProgram">
@@ -71,11 +99,11 @@ export function CefrProgramsSection() {
           <h3>{program.title}</h3>
           <p>{program.description}</p>
           <div className="cefrFacts"><span><small>Tahmini süre</small>{program.duration}</span><span><small>Önerilen tempo</small>{program.pace}</span></div>
-          <div className="cefrActions"><a href="#seviye-testi">Seviyeni ücretsiz belirle <span>↗</span></a><a href="#programlar">Kurs türlerini incele</a></div>
+          <div className="cefrActions"><a href="#seviye-testi">Seviyeni ücretsiz belirle</a><a href="#programlar">Kurs türlerini incele</a></div>
         </div>
         <div className="cefrColumn content">
           <span className="cefrColumnLabel">Ders içeriği</span>
-          <ol>{program.content.map((item, index) => <li key={item}><i>{String(index + 1).padStart(2, "0")}</i>{item}</li>)}</ol>
+          <ol>{program.content.map((item, index) => <li key={item}><i>{index + 1}</i>{item}</li>)}</ol>
         </div>
         <div className="cefrColumn outcomes">
           <span className="cefrColumnLabel">Kazanımlar</span>

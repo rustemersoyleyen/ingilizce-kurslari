@@ -13,10 +13,10 @@ export function LeadForm({ city }: { city: string }) {
   return (
     <form className="leadForm" onSubmit={handleSubmit} aria-label="Ücretsiz seviye tespit formu">
       <div className="formHeading">
-        <span className="formStep">01</span>
+        <span className="formStep">1</span>
         <div>
-          <p className="eyebrow">01 Adım · Ücretsiz Ders &amp; Tespit</p>
-          <h2>Sana Özel Eğitim Planını Hemen Başlat</h2>
+          <p className="eyebrow">1. Adım · Ücretsiz Seviye Tespiti &amp; Planlama</p>
+          <h2 className="leadFormTitle">Sana Özel Eğitim Planını Hemen Başlat</h2>
         </div>
       </div>
 
@@ -53,7 +53,6 @@ export function LeadForm({ city }: { city: string }) {
 
       <button className="primaryButton" type="submit">
         <span>{sent ? "Talebin Başarıyla Alındı ✓" : "Ücretsiz Seviye Tespitini Başlat"}</span>
-        <span aria-hidden="true">↗</span>
       </button>
       <p className="formNote">
         {sent ? `${city} eğitim danışmanımız 15 dakika içinde seni arayacak.` : "⚡ 2 dakika sürer · Kredi kartı gerekmez · Taahhütsüz deneme"}
