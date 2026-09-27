@@ -18,14 +18,21 @@ export function PricingSection({ city }: { city: string }) {
   const [selected, setSelected] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabsContainerRef = useRef<HTMLDivElement | null>(null);
   const offer = offers[selected];
+
+  function centerTab(index: number) {
+    const container = tabsContainerRef.current;
+    const tabEl = tabRefs.current[index];
+    if (container && tabEl) {
+      const targetLeft = tabEl.offsetLeft - (container.clientWidth / 2) + (tabEl.clientWidth / 2);
+      container.scrollTo({ left: targetLeft, behavior: "smooth" });
+    }
+  }
 
   function handleSelect(index: number) {
     setSelected(index);
-    const tabEl = tabRefs.current[index];
-    if (tabEl) {
-      tabEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
+    centerTab(index);
   }
 
   function handlePrev() {
@@ -43,7 +50,7 @@ export function PricingSection({ city }: { city: string }) {
     const timer = setInterval(() => {
       setSelected((prev) => {
         const next = (prev + 1) % offers.length;
-        tabRefs.current[next]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        centerTab(next);
         return next;
       });
     }, 5000);
@@ -76,7 +83,7 @@ export function PricingSection({ city }: { city: string }) {
         >
           ‹
         </button>
-        <div className="priceTabs" role="tablist" aria-label="Fiyatı görüntülenecek programı seçin">
+        <div ref={tabsContainerRef} className="priceTabs" role="tablist" aria-label="Fiyatı görüntülenecek programı seçin">
           {offers.map((item, index) => (
             <button
               ref={(el) => { tabRefs.current[index] = el; }}

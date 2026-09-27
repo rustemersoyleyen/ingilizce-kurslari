@@ -10,13 +10,20 @@ export function DistrictCoursesSection({ city }: { city: string }) {
   const [isPaused, setIsPaused] = useState(false);
   const district = districts[selected] || districts[0];
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabsContainerRef = useRef<HTMLDivElement | null>(null);
+
+  function centerTab(index: number) {
+    const container = tabsContainerRef.current;
+    const tabEl = tabRefs.current[index];
+    if (container && tabEl) {
+      const targetLeft = tabEl.offsetLeft - (container.clientWidth / 2) + (tabEl.clientWidth / 2);
+      container.scrollTo({ left: targetLeft, behavior: "smooth" });
+    }
+  }
 
   function handleSelect(index: number) {
     setSelected(index);
-    const tabEl = tabRefs.current[index];
-    if (tabEl) {
-      tabEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
+    centerTab(index);
   }
 
   function handlePrev() {
@@ -34,7 +41,7 @@ export function DistrictCoursesSection({ city }: { city: string }) {
     const timer = setInterval(() => {
       setSelected((prev) => {
         const next = (prev + 1) % districts.length;
-        tabRefs.current[next]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        centerTab(next);
         return next;
       });
     }, 4500);
@@ -65,7 +72,7 @@ export function DistrictCoursesSection({ city }: { city: string }) {
         >
           ‹
         </button>
-        <div className="districtFilters" role="tablist" aria-label={`${city} ilçelerini seçin`}>
+        <div ref={tabsContainerRef} className="districtFilters" role="tablist" aria-label={`${city} ilçelerini seçin`}>
           {districts.map((item, index) => (
             <button
               key={item.name}
